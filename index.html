@@ -10,18 +10,16 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Biopatid — зірковий інтелект схуднення">
   <meta property="og:description" content="Інноваційний препарат для зниження ваги. Контроль апетиту, стабільне схуднення без дієт.">
-  <!-- TODO: замінити на повний URL після деплою -->
-  <meta property="og:url" content="https://your-domain.com">
+  <meta property="og:url" content="https://biopatid-landing.vercel.app">
   <!-- TODO: додати зображення 1200×630px для превью в соцмережах -->
-  <meta property="og:image" content="https://your-domain.com/assets/og-image.png">
+  <meta property="og:image" content="https://biopatid-landing.vercel.app/assets/og-image.png">
   <meta property="og:locale" content="uk_UA">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Biopatid — зірковий інтелект схуднення">
   <meta name="twitter:description" content="Інноваційний препарат для зниження ваги. Контроль апетиту, стабільне схуднення без дієт.">
-  <!-- TODO: замінити на реальне зображення -->
-  <meta name="twitter:image" content="https://your-domain.com/assets/og-image.png">
+  <meta name="twitter:image" content="https://biopatid-landing.vercel.app/assets/og-image.png">
 
   <!-- Favicon — TODO: замінити на реальний файл favicon.ico -->
   <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -4941,4 +4939,109 @@
     function checkReveal() {
       if (!isMobile()) {
         // On desktop: make sure everything is visible
-        revealEls.forEach(fun
+        revealEls.forEach(function(el) { el.classList.add('is-revealed'); });
+        return;
+      }
+      var trigger = window.innerHeight * 0.82;
+      revealEls.forEach(function(el) {
+        var rect = el.getBoundingClientRect();
+        if (rect.top < trigger) {
+          el.classList.add('is-revealed');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', checkReveal, { passive: true });
+    window.addEventListener('resize', checkReveal);
+    checkReveal();
+  })();
+
+  /* ==========================================================
+     STRAPI CMS — Dynamic product data loader
+     Подгружает данные продуктов из Strapi API.
+     Если API недоступен — на странице остаётся захардкоженный контент (fallback).
+  ========================================================== */
+  (function() {
+    // ⚡ НАСТРОЙКА: замени на реальный URL Strapi после деплоя
+    var STRAPI_URL = 'http://localhost:1337';
+    var API_ENDPOINT = STRAPI_URL + '/api/products?populate=photo,photo_alt&sort=sort_order:asc';
+
+    // Маппинг данных Strapi → DOM-элементы
+    function applyProductData(products) {
+      if (!products || !products.length) return;
+
+      // Группируем продукты: первый — основной (Biopatid), второй — Kit (если есть)
+      products.forEach(function(item, idx) {
+        var attrs = item.attributes || item;
+
+        // Обновляем цену для текущего активного продукта
+        var priceEl = document.getElementById('product-price');
+        if (priceEl && idx === 0) {
+          var formatted = Number(attrs.price).toLocaleString('uk-UA').replace(/,/g, ' ');
+          priceEl.textContent = formatted + ' ' + (attrs.currency || '₴');
+        }
+
+        // Обновляем название
+        var nameEl = document.getElementById('product-name');
+        if (nameEl && idx === 0) {
+          nameEl.textContent = attrs.name || nameEl.textContent;
+        }
+
+        // Обновляем дозировку
+        var doseEl = document.getElementById('product-dose-label');
+        if (doseEl && idx === 0) {
+          doseEl.textContent = attrs.dose || doseEl.textContent;
+        }
+
+        // Обновляем tagline (подзаголовок)
+        var subtitleEl = document.querySelector('.product__subtitle');
+        if (subtitleEl && idx === 0 && attrs.tagline) {
+          subtitleEl.textContent = attrs.tagline;
+        }
+
+        // Обновляем описание (includes)
+        var includesEl = document.querySelector('.product__includes');
+        if (includesEl && idx === 0 && attrs.includes) {
+          includesEl.textContent = attrs.includes;
+        }
+
+        // Обновляем фото продукта
+        if (attrs.photo && attrs.photo.data) {
+          var photoUrl = STRAPI_URL + attrs.photo.data.attributes.url;
+          var photoEls = document.querySelectorAll('.product__photo[data-product="' + idx + '"]:not([data-dose])');
+          photoEls.forEach(function(img) {
+            img.src = photoUrl;
+            img.alt = attrs.name + ' ' + attrs.dose;
+          });
+        }
+
+        // Обновляем альтернативное фото (другая дозировка)
+        if (attrs.photo_alt && attrs.photo_alt.data) {
+          var altUrl = STRAPI_URL + attrs.photo_alt.data.attributes.url;
+          var altEls = document.querySelectorAll('.product__photo[data-product="' + idx + '"][data-dose="1"]');
+          altEls.forEach(function(img) {
+            img.src = altUrl;
+          });
+        }
+      });
+
+      console.log('[Strapi] Product data loaded successfully (' + products.length + ' items)');
+    }
+
+    // Загрузка данных
+    fetch(API_ENDPOINT)
+      .then(function(res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function(json) {
+        applyProductData(json.data || []);
+      })
+      .catch(function(err) {
+        console.log('[Strapi] API unavailable, using fallback HTML content. (' + err.message + ')');
+      });
+  })();
+</script>
+
+</body>
+</html>
