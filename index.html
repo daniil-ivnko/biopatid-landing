@@ -1,0 +1,4944 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Biopatid — зірковий інтелект схуднення</title>
+  <meta name="description" content="Biopatid — інноваційний препарат для зниження ваги. Контроль апетиту, стабільне схуднення без дієт. Результат від 2 кг за перший тиждень.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Biopatid — зірковий інтелект схуднення">
+  <meta property="og:description" content="Інноваційний препарат для зниження ваги. Контроль апетиту, стабільне схуднення без дієт.">
+  <!-- TODO: замінити на повний URL після деплою -->
+  <meta property="og:url" content="https://your-domain.com">
+  <!-- TODO: додати зображення 1200×630px для превью в соцмережах -->
+  <meta property="og:image" content="https://your-domain.com/assets/og-image.png">
+  <meta property="og:locale" content="uk_UA">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Biopatid — зірковий інтелект схуднення">
+  <meta name="twitter:description" content="Інноваційний препарат для зниження ваги. Контроль апетиту, стабільне схуднення без дієт.">
+  <!-- TODO: замінити на реальне зображення -->
+  <meta name="twitter:image" content="https://your-domain.com/assets/og-image.png">
+
+  <!-- Favicon — TODO: замінити на реальний файл favicon.ico -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <!-- TODO: додати apple-touch-icon 180×180px -->
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <!-- Google Analytics 4 — TODO: вставити свій GA4 ID -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script> -->
+
+  <!-- Meta Pixel — TODO: вставити свій Pixel ID -->
+  <!-- <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'XXXXXXXXXX');
+    fbq('track', 'PageView');
+  </script> -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================
+       RESET
+    ========================================================== */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      /* Гасим горизонтальный скролл от .page (1920px design).
+         overflow-x: clip (не hidden!) — не создаёт scroll-контейнер,
+         поэтому не ломает pointer-events при CSS zoom. */
+      overflow-x: clip;
+    }
+    body {
+      font-family: 'Unbounded', sans-serif;
+      font-weight: 400;
+      color: #1A2847;
+      background: #FFFFFF;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    img, svg { display: block; max-width: 100%; }
+
+    /* ==========================================================
+       DESIGN TOKENS
+    ========================================================== */
+    :root {
+      --c-text:        #1A2847;
+      --c-text-60:     rgba(26, 40, 71, 0.60);
+      --c-text-50:     rgba(26, 40, 71, 0.50);
+      --c-accent:      #5C4892;
+      --c-white:       #FFFFFF;
+      --c-white-70:    rgba(255, 255, 255, 0.70);
+      --c-white-40:    rgba(255, 255, 255, 0.40);
+      --c-white-28:    rgba(255, 255, 255, 0.28);
+
+      --gradient-hero: linear-gradient(180deg, #9582CD 0%, rgba(200, 194, 240, 0.85) 100%);
+
+      --r-card:        24px;
+      --r-hero:        32px;
+      --r-cta:         40px;
+      --r-pill:        999px;
+    }
+
+    /* ==========================================================
+       PAGE FIT — wrapper. С CSS zoom высоту страницы менять JS не нужно,
+       zoom сам корректно меняет layout-bounds.
+    ========================================================== */
+    .page-fit {
+      width: 100%;
+      position: relative;
+      overflow: visible;
+    }
+
+    .page {
+      position: relative;
+      width: 1920px;
+      background: #FFFFFF;
+      transform-origin: top left;
+      padding-top: 56px;
+    }
+
+    .pin-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+    }
+    .pin-layer > .trap__canvas,
+    .pin-layer > .trans__canvas {
+      pointer-events: auto;
+    }
+
+    /* ==========================================================
+       NAV — fixed at top of viewport, scales with the rest of design
+    ========================================================== */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      z-index: 300;
+      pointer-events: none;
+    }
+    .topbar__inner {
+      width: 1920px;
+      height: 56px;
+      padding: 0 140px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      pointer-events: auto;
+      transform-origin: top left;
+      background: transparent;
+      backdrop-filter: blur(0);
+      -webkit-backdrop-filter: blur(0);
+      border-bottom: 1px solid transparent;
+      transition: background .3s ease, backdrop-filter .3s ease, border-color .3s ease;
+    }
+    .topbar--scrolled .topbar__inner {
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(26, 40, 71, 0.08);
+    }
+    .topbar__inner .nav__logo { justify-self: start; }
+    .topbar__inner .nav__menu { justify-self: center; }
+    .topbar__inner .nav__cta  { justify-self: end; margin-left: 0; }
+    /* legacy .nav class kept just in case it's referenced elsewhere */
+    .nav { position: relative; }
+
+    .nav__logo {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      color: var(--c-text);
+      text-decoration: none;
+      transition: opacity 0.25s ease;
+    }
+    .nav__logo:hover { opacity: 0.6; }
+
+    .nav__menu {
+      display: flex;
+      align-items: center;
+      gap: 48px;
+    }
+    .nav__menu a {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.7px;
+      color: var(--c-text);
+      transition: opacity .2s ease;
+    }
+    .nav__menu a:hover { opacity: .6; }
+
+    .nav__cta {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 24px;
+      border-radius: var(--r-pill);
+      border: 1px solid var(--c-text);
+      font-family: 'Unbounded', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      color: var(--c-text);
+      transition: background .2s ease, color .2s ease;
+    }
+    .nav__cta:hover { background: var(--c-text); color: #FFFFFF; }
+
+    /* ==========================================================
+       HERO (Frame 5 — 1888×1008, теперь relative с margin
+       чтобы следующие секции flow'ились ниже)
+    ========================================================== */
+    .hero {
+      position: relative;
+      margin: 0 16px 16px;
+      height: 1008px;
+      border-radius: var(--r-hero);
+      overflow: hidden;
+      background: var(--gradient-hero);
+    }
+
+    /* Decorative cloud overlays.
+       Names match Figma layers ("32 1" → cloud-1, "100 1" → cloud-2).
+       Use transparent PNGs (white cloud, transparent bg).
+       max-width: none — отменяем глобальное `img { max-width: 100% }`,
+       которое режет cloud-2 (2653px) до ширины hero (1888px). */
+    .hero__cloud {
+      position: absolute;
+      pointer-events: none;
+      user-select: none;
+      max-width: none;
+    }
+    .hero__cloud--bg {
+      top: 40px;
+      left: -212px;
+      width: 2653px;
+      height: 1267px;
+      transform: rotate(174.48deg);
+      opacity: 0.29;
+      z-index: 1;
+    }
+    .hero__cloud--mid {
+      top: 250px;
+      left: 561.32px;
+      width: 1777.63px;
+      height: 655.31px;
+      transform: rotate(3.28deg);
+      opacity: 1;
+      z-index: 2;
+    }
+
+    /* Hero image (woman + product) */
+    .hero__woman {
+      position: absolute;
+      top: 11px;
+      left: 903px;
+      width: 940px;
+      height: 1259px;
+      pointer-events: none;
+      user-select: none;
+      z-index: 3;
+      object-fit: contain;
+    }
+
+    /* ==========================================================
+       HERO CONTENT (959×807, x=124, y=64, AL ↓ gap 52)
+    ========================================================== */
+    .hero__content {
+      position: absolute;
+      top: 64px;
+      left: 124px;
+      width: 959px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 52px;
+      z-index: 5;
+    }
+
+    /* ----- Badge ----- */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      border: 1px solid var(--c-white-28);
+      border-radius: var(--r-pill);
+      background: transparent;
+      cursor: pointer;
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+    .badge:hover {
+      border-color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.08);
+    }
+    .badge__icon {
+      width: 12px;
+      height: 12px;
+      stroke: var(--c-white-70);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .badge__text {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.6px;
+      color: var(--c-white-70);
+      white-space: nowrap;
+    }
+
+    /* ----- Title ----- */
+    .hero__title {
+      margin: 0;
+      width: 959px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 72px;
+      line-height: 62px;
+      font-weight: 700;
+      letter-spacing: 0;
+      color: var(--c-text);
+    }
+    .hero__title .accent {
+      color: #FFFFFF;
+    }
+
+    /* ----- Description -----
+       Figma: 746 wide. В браузере Unbounded шире — увеличил до 820,
+       чтобы каждое предложение помещалось на одной строке. */
+    .hero__desc {
+      margin: 0;
+      max-width: 820px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 24px;
+      line-height: 27px;
+      font-weight: 400;
+      letter-spacing: 0;
+      color: var(--c-text-60);
+    }
+
+    /* ----- CTA + Metrics group (Frame 10, AL ↓ gap 104) ----- */
+    .cta-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 104px;
+    }
+
+    /* CTA button (434×78, padding 60/24, radius 40) */
+    .hero__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 60px;
+      border-radius: var(--r-cta);
+      background: var(--c-white);
+      box-shadow: 0 4px 24px rgba(26, 40, 71, 0.08);
+      font-family: 'Unbounded', sans-serif;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      color: var(--c-accent);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .hero__cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(26, 40, 71, 0.12);
+    }
+
+    /* ==========================================================
+       METRICS — grid с 3 равными карточками внутри 670px контейнера.
+       Figma даёт 178px на карточку, но Unbounded в браузере шире,
+       поэтому растянул контейнер до 670 (ширина из Metrics frame),
+       каждая карточка ~207px, content area 159px — "Харчова свобода"
+       помещается без переноса.
+    ========================================================== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      width: 670px;
+    }
+    /* Ticker wrapper — on desktop just a pass-through grid child spanning all columns */
+    .metrics-ticker {
+      display: contents;
+    }
+
+    .metric-card {
+      height: 138px;
+      padding: 16px 24px;
+      border-radius: var(--r-card);
+      background: var(--c-white-40);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        0 4px 24px rgba(26, 40, 71, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+    .metric-card:hover {
+      transform: translateY(-3px);
+      background: rgba(255, 255, 255, 0.55);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.6),
+        0 12px 32px rgba(26, 40, 71, 0.12);
+    }
+
+    /* Frame 8 inside card — icon + title, AL ↓ gap 8 */
+    .metric-card__head {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .metric-card__icon {
+      width: 24px;
+      height: 24px;
+      stroke: var(--c-accent);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .metric-card__title {
+      margin: 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 16px;
+      line-height: 1.25;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      color: var(--c-text);
+      white-space: nowrap;
+    }
+
+    .metric-card__sub {
+      margin: 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 12px;
+      line-height: 1.25;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      color: var(--c-text-50);
+    }
+
+    /* ==========================================================================
+       BLOCK 2 — TRAP / IDENTIFICATION (sticky scroll experience)
+       White bg, sticky canvas locks while scrolling, photos swap behind, ring fills,
+       label/description swap per stage, "Розірвати коло" appears at end.
+    ========================================================================== */
+    :root {
+      --c-trap-text:    #1A2847;
+      --c-trap-muted:   rgba(26, 40, 71, 0.55);
+      --c-trap-faint:   rgba(26, 40, 71, 0.12);
+      --c-trap-accent:  #5C4892;
+    }
+
+    .trap {
+      position: relative;
+      background: #FFFFFF;
+    }
+
+    /* === Intro (heading) — normal flow at top === */
+    .trap__intro {
+      position: relative;
+      padding: 120px 140px 64px;
+      text-align: center;
+    }
+    .trap__heading {
+      margin: 0 auto;
+      max-width: 1100px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 80px;
+      line-height: 0.98;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--c-trap-text);
+    }
+    .trap__heading em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--c-trap-accent);
+    }
+
+    /* === Sticky scroll zone ===
+       Native CSS sticky — работает нативно благодаря CSS zoom (вместо
+       transform: scale, который ломал sticky-context).
+       Zone = 3.5 × canvas. */
+    .trap__zone {
+      position: relative;
+      height: calc(100vh * 3.5 / var(--page-scale, 1));
+    }
+    .trap__canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      --canvas-h: calc(100vh / var(--page-scale, 1));
+      height: var(--canvas-h);
+      overflow: hidden;
+    }
+
+    /* Photo backgrounds — 5 layered divs, current one fades in */
+    .trap__photos {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .trap__photo {
+      position: absolute;
+      inset: 0;
+      background-color: #FFFFFF;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+    }
+    .trap__photo.is-active { opacity: 1; }
+    .trap__photo--1 { background-image: url('assets/part-1.png'); }
+    .trap__photo--2 { background-image: url('assets/part-2.png'); }
+    .trap__photo--3 { background-image: url('assets/part-3.png'); }
+    .trap__photo--4 { background-image: url('assets/part-4.png'); }
+    .trap__photo--5 { background-image: url('assets/part-5.png'); }
+    .trap__photo--6 { background-image: url('assets/part-6.png'); }
+
+    /* Fade overlays — managed by JS: top fade on stage 1, bottom fade on CTA */
+    .trap__veil {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .trap__fade-top,
+    .trap__fade-bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    .trap__fade-top {
+      top: 0;
+      height: 22%;
+      background: linear-gradient(180deg,
+        rgba(255,255,255,0.95) 0%,
+        rgba(255,255,255,0.4) 50%,
+        rgba(255,255,255,0) 100%);
+    }
+    .trap__fade-top.is-visible { opacity: 1; }
+    .trap__fade-bottom {
+      bottom: 0;
+      height: 18%;
+      background: linear-gradient(0deg,
+        rgba(255,255,255,0.95) 0%,
+        rgba(255,255,255,0.4) 50%,
+        rgba(255,255,255,0) 100%);
+    }
+    .trap__fade-bottom.is-visible { opacity: 1; }
+
+    /* === Stage label (top center, fades between stages) ===
+       Все размеры пропорциональны --canvas-h (JS подставляет реальное значение).
+       На любой высоте viewport: лейблы у верха, круг центрирован, описание у низа,
+       без коллизий. Базовые цифры — относительно 1080 design height. */
+    .trap__labels {
+      position: absolute;
+      top: max(72px, calc(var(--canvas-h, 1080px) * 62 / 1080));
+      left: 0;
+      right: 0;
+      height: calc(var(--canvas-h, 1080px) * 140 / 1080);
+      z-index: 4;
+      pointer-events: none;
+    }
+    .trap__label {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .trap__label.is-active {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .trap__label-num {
+      font-family: 'Unbounded', sans-serif;
+      font-size: calc(var(--canvas-h, 1080px) * 80 / 1080);
+      font-weight: 700;
+      line-height: 1;
+      color: var(--c-trap-accent);
+      letter-spacing: -0.02em;
+      transition: color 0.5s ease, text-shadow 0.5s ease;
+    }
+    .trap__label-day {
+      font-family: 'Unbounded', sans-serif;
+      font-size: calc(var(--canvas-h, 1080px) * 13 / 1080);
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--c-trap-text);
+      margin-top: calc(var(--canvas-h, 1080px) * 12 / 1080);
+      transition: color 0.5s ease, text-shadow 0.5s ease;
+    }
+
+    /* === Circle SVG (center) ===
+       Размер 58% от canvas-h → достаточно clearance сверху/снизу
+       (labels + description). На любом viewport — без коллизий. */
+    .trap__circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: calc(var(--canvas-h, 1080px) * 0.58);
+      height: calc(var(--canvas-h, 1080px) * 0.58);
+      z-index: 3;
+    }
+    .trap__svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      transition: filter 0.5s ease;
+    }
+    .trap__ring-bg {
+      fill: none;
+      stroke: var(--c-trap-faint);
+      stroke-width: 1;
+      stroke-dasharray: 2 6;
+    }
+    .trap__arc {
+      fill: none;
+      stroke: var(--c-trap-accent);
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+    .trap__dot {
+      fill: var(--c-trap-accent);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .trap__dot.is-on { opacity: 1; }
+    .trap__pointer circle {
+      fill: var(--c-trap-accent);
+      filter: drop-shadow(0 2px 8px rgba(92, 72, 146, 0.4));
+    }
+
+    /* === Description (below circle) ===
+       Пропорционально --canvas-h: bottom ~9.3%, height ~7.4% от высоты canvas. */
+    .trap__descriptions {
+      position: absolute;
+      left: 50%;
+      bottom: calc(var(--canvas-h, 1080px) * 100 / 1080);
+      transform: translateX(-50%);
+      width: 780px;
+      height: calc(var(--canvas-h, 1080px) * 80 / 1080);
+      z-index: 4;
+      pointer-events: none;
+    }
+    .trap__description {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .trap__description.is-active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .trap__desc-text {
+      margin: 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: calc(var(--canvas-h, 1080px) * 22 / 1080);
+      line-height: 1.45;
+      font-weight: 400;
+      color: var(--c-trap-muted);
+      max-width: 700px;
+      transition: color 0.5s ease, text-shadow 0.5s ease;
+    }
+
+    /* === Dark-stage mode — white text & circle on dark photos (stages 3,4,5) === */
+    .trap__canvas.is-dark .trap__label-num {
+      color: #FFFFFF;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5), 0 0 40px rgba(0,0,0,0.3);
+    }
+    .trap__canvas.is-dark .trap__label-day {
+      color: #FFFFFF;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.5), 0 0 32px rgba(0,0,0,0.3);
+    }
+    .trap__canvas.is-dark .trap__desc-text {
+      color: #FFFFFF;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.5), 0 0 32px rgba(0,0,0,0.3);
+    }
+    .trap__canvas.is-dark .trap__ring-bg {
+      stroke: rgba(255,255,255,0.2);
+    }
+    .trap__canvas.is-dark .trap__arc {
+      stroke: #FFFFFF;
+    }
+    .trap__canvas.is-dark .trap__dot {
+      fill: #FFFFFF;
+    }
+    .trap__canvas.is-dark .trap__pointer circle {
+      fill: #FFFFFF;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+    }
+
+    /* === Feather icons — hidden on desktop, shown on mobile === */
+    .trap__feather {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      stroke: var(--c-trap-accent);
+      color: var(--c-trap-accent);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .trap__feather circle { fill: var(--c-trap-accent); stroke: none; }
+    .trap__feather.is-visible {
+      opacity: 1;
+    }
+    .trap__feather-label {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 3.6px;
+      font-weight: 500;
+      fill: var(--c-trap-accent);
+      stroke: none;
+      letter-spacing: 0.02em;
+    }
+
+    /* === Break button — center of circle, hidden until segment 6 === */
+    .trap__break {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      width: calc(var(--canvas-h, 1080px) * 240 / 1080);
+      height: calc(var(--canvas-h, 1080px) * 240 / 1080);
+      border-radius: 50%;
+      background: var(--c-trap-text);
+      color: #FFFFFF;
+      border: none;
+      font-family: 'Unbounded', sans-serif;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      opacity: 0;
+      pointer-events: none;
+      box-shadow:
+        0 24px 60px rgba(26, 40, 71, 0.30),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      transition:
+        opacity 0.6s ease,
+        transform 0.6s cubic-bezier(.2,.7,.3,1.4),
+        box-shadow 0.4s ease;
+      z-index: 6;
+      overflow: hidden;
+    }
+    .trap__break.is-visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      pointer-events: auto;
+    }
+    .trap__break:hover {
+      box-shadow:
+        0 32px 80px rgba(26, 40, 71, 0.42),
+        inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+    .trap__break-line-1,
+    .trap__break-line-2 {
+      display: block;
+      transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.3, 1);
+    }
+    .trap__break-line-1 {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+    .trap__break-line-2 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+    /* Hover splits the two lines apart horizontally */
+    .trap__break:hover .trap__break-line-1 { transform: translateX(-32px); }
+    .trap__break:hover .trap__break-line-2 { transform: translateX(32px); }
+
+    /* === Stats (centered, after sticky zone) === */
+    .trap__stats {
+      position: relative;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 100px 100px 120px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      border-top: 1px solid var(--c-trap-faint);
+    }
+    .trap__stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      text-align: center;
+    }
+    .trap__stat-num {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 168px;
+      font-weight: 700;
+      line-height: 0.85;
+      letter-spacing: -0.05em;
+      color: var(--c-trap-text);
+      display: flex;
+      align-items: flex-start;
+    }
+    .trap__stat-num sup {
+      font-size: 64px;
+      font-weight: 700;
+      vertical-align: top;
+      margin-left: 4px;
+      margin-top: 8px;
+      color: var(--c-trap-text);
+    }
+    .trap__stat-label {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.4;
+      color: var(--c-trap-muted);
+      max-width: 360px;
+      text-align: center;
+    }
+    .trap__stats-source {
+      grid-column: 1 / -1;
+      margin: 8px 0 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 0.4px;
+      color: var(--c-trap-muted);
+      opacity: 0.7;
+      text-align: center;
+    }
+
+    /* ==========================================================================
+       BLOCK 3 — TRANSFORMATION (sticky split-sidebar)
+       Sticky canvas split 50/50: LEFT — статичный сайдбар (тег, заголовок,
+       меню 5 состояний с активной точкой, CTA внизу), RIGHT — сцена с
+       большим faded-числом, заголовком и описанием. Подложка справа — холодные
+       тинты per state (без cream). По вертикальному скроллу меняется active state.
+    ========================================================================== */
+    :root {
+      --c-trans-text:   #1A2847;
+      --c-trans-muted:  rgba(26, 40, 71, 0.50);
+      --c-trans-soft:   rgba(26, 40, 71, 0.30);
+      --c-trans-faint:  rgba(26, 40, 71, 0.10);
+      --c-trans-line:   rgba(26, 40, 71, 0.08);
+      --c-trans-accent: #5C4892;
+    }
+
+    .trans { background: #FFFFFF; }
+
+    /* Sticky zone — native CSS sticky (та же причина что в trap).
+       Zone = 4 × canvas (1 canvas + 3 скролла). */
+    .trans__zone {
+      position: relative;
+      height: calc(100vh * 4 / var(--page-scale, 1));
+    }
+    .trans__canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      --canvas-h: calc(100vh / var(--page-scale, 1));
+      height: var(--canvas-h);
+      overflow: hidden;
+      background: #FFFFFF;
+    }
+    .trans__split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 100%;
+      width: 100%;
+    }
+
+    /* === LEFT: sidebar (статичный — состав не меняется при скролле) === */
+    .trans__side {
+      padding: calc(var(--canvas-h, 1080px) * 110 / 1080) 80px calc(var(--canvas-h, 1080px) * 80 / 1080) 140px;
+      display: flex;
+      flex-direction: column;
+      background: #FFFFFF;
+      position: relative;
+      z-index: 2;
+    }
+    .trans__tag {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--c-trans-accent);
+      margin-bottom: 32px;
+    }
+    .trans__heading {
+      margin: 0 0 24px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 52px;
+      line-height: 1.0;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--c-trans-text);
+      max-width: 580px;
+    }
+    .trans__heading em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--c-trans-accent);
+    }
+    .trans__subtitle {
+      margin: 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 17px;
+      line-height: 1.45;
+      font-weight: 400;
+      color: var(--c-trans-muted);
+      max-width: 480px;
+    }
+
+    /* Vertical menu — 5 states, active с точкой и описанием */
+    .trans__menu {
+      list-style: none;
+      margin: 56px 0 auto;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .trans__menu-item {
+      position: relative;
+      padding: 14px 0 14px 32px;
+      cursor: pointer;
+      transition: opacity 0.4s ease;
+    }
+    .trans__menu-item::before {
+      content: '';
+      position: absolute;
+      top: 22px;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1px solid var(--c-trans-faint);
+      background: transparent;
+      transition: all 0.4s cubic-bezier(.2,.7,.3,1);
+    }
+    .trans__menu-item.is-active::before {
+      background: var(--c-trans-accent);
+      border-color: var(--c-trans-accent);
+      box-shadow: 0 0 0 6px rgba(92, 72, 146, 0.10);
+    }
+    .trans__menu-name {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--c-trans-soft);
+      transition: color 0.4s ease, font-weight 0.4s ease;
+    }
+    .trans__menu-item.is-active .trans__menu-name {
+      color: var(--c-trans-text);
+      font-weight: 600;
+    }
+    .trans__menu-desc {
+      margin: 0;
+      max-height: 0;
+      overflow: hidden;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 14px;
+      line-height: 1.45;
+      font-weight: 400;
+      color: var(--c-trans-muted);
+      max-width: 380px;
+      opacity: 0;
+      transition: max-height 0.5s ease, opacity 0.4s ease, margin 0.4s ease;
+    }
+    .trans__menu-item.is-active .trans__menu-desc {
+      max-height: 160px;
+      opacity: 1;
+      margin: 12px 0 8px;
+    }
+    .trans__menu-item:hover:not(.is-active) .trans__menu-name {
+      color: var(--c-trans-text);
+    }
+
+    /* CTA pill — нижний акцент */
+    .trans__cta {
+      display: inline-flex;
+      align-self: flex-start;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 36px;
+      margin-top: 32px;
+      border-radius: var(--r-pill);
+      background: var(--c-trans-accent);
+      color: #FFFFFF;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .trans__cta:hover {
+      background: var(--c-trans-text);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 44px rgba(26, 40, 71, 0.22);
+    }
+    .trans__cta-arrow {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      transition: transform 0.25s ease;
+    }
+    .trans__cta:hover .trans__cta-arrow {
+      transform: translateX(4px);
+    }
+
+    /* === RIGHT: stage (меняется per state) ===
+       Холодные тинты per state, dark navy для "Ніч" — без cream/yellow. */
+    .trans__stage {
+      position: relative;
+      background: #F2F0F4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: background 0.7s ease;
+    }
+    .trans__stage[data-state="1"] { background: #EFEEF2; }
+    .trans__stage[data-state="2"] { background: #ECEFF4; }
+    .trans__stage[data-state="3"] { background: #F2EBED; }
+    .trans__stage[data-state="4"] { background: #1F2640; }
+    .trans__stage[data-state="5"] { background: #EAE7F0; }
+
+    .trans__state {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 80px;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+      background-size: cover;
+      background-position: center;
+    }
+    .trans__state::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 0;
+    }
+    .trans__state > * { position: relative; z-index: 1; }
+    .trans__state[data-state="1"] { background-image: url('assets/pic-1.jpeg'); }
+    .trans__state[data-state="2"] { background-image: url('assets/pic-2.jpeg'); }
+    .trans__state[data-state="3"] { background-image: url('assets/pic-3.jpeg'); }
+    .trans__state[data-state="4"] { background-image: url('assets/pic-4.jpeg'); }
+    .trans__state[data-state="5"] { background-image: url('assets/pic-5.jpeg'); }
+    .trans__state.is-active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .trans__state-num {
+      font-family: 'Unbounded', sans-serif;
+      font-size: calc(var(--canvas-h, 1080px) * 280 / 1080);
+      line-height: 0.85;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: rgba(255, 255, 255, 0.12);
+      margin-bottom: calc(var(--canvas-h, 1080px) * -32 / 1080);
+      user-select: none;
+    }
+    .trans__state-title {
+      margin: 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: calc(var(--canvas-h, 1080px) * 56 / 1080);
+      line-height: 1;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.3);
+    }
+    .trans__state-desc {
+      margin: calc(var(--canvas-h, 1080px) * 24 / 1080) 0 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: calc(var(--canvas-h, 1080px) * 19 / 1080);
+      line-height: 1.5;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.8);
+      max-width: 520px;
+      text-shadow: 0 1px 12px rgba(0,0,0,0.3);
+    }
+
+    /* ==========================================================================
+       BLOCK 4 — MECHANICS
+       Medical background in the same premium, calm visual language.
+    ========================================================================== */
+    :root {
+      --c-mech-text:   #1A2847;
+      --c-mech-muted:  rgba(26, 40, 71, 0.54);
+      --c-mech-soft:   rgba(26, 40, 71, 0.34);
+      --c-mech-line:   rgba(26, 40, 71, 0.10);
+      --c-mech-accent: #5C4892;
+      --c-mech-bg:     #F7F6FA;
+    }
+
+    .mechanics {
+      position: relative;
+      background: #FFFFFF;
+      padding: 132px 140px 140px;
+      color: var(--c-mech-text);
+    }
+    .mechanics__inner {
+      max-width: 1640px;
+      margin: 0 auto;
+    }
+    .mechanics__kicker {
+      margin: 0 0 28px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--c-mech-accent);
+      text-align: center;
+    }
+    .mechanics__title {
+      margin: 0 auto;
+      max-width: 1260px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 76px;
+      line-height: 0.98;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-align: center;
+      color: var(--c-mech-text);
+    }
+    .mechanics__title em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--c-mech-accent);
+    }
+    .mechanics__subtitle {
+      margin: 34px auto 0;
+      max-width: 820px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 22px;
+      line-height: 1.45;
+      font-weight: 400;
+      text-align: center;
+      color: var(--c-mech-muted);
+    }
+
+    .mechanics__grid {
+      margin-top: 86px;
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap: 32px;
+      align-items: stretch;
+    }
+    .mechanics__panel {
+      border-radius: 24px;
+      background: var(--c-mech-bg);
+      border: 1px solid var(--c-mech-line);
+      padding: 44px;
+    }
+    .mechanics__panel--medical {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 520px;
+    }
+    .mechanics__eyebrow {
+      margin: 0 0 22px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--c-mech-accent);
+    }
+    .mechanics__lead {
+      margin: 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 28px;
+      line-height: 1.28;
+      font-weight: 500;
+      color: var(--c-mech-text);
+    }
+    .mechanics__body {
+      margin: 24px 0 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 17px;
+      line-height: 1.65;
+      font-weight: 400;
+      color: var(--c-mech-muted);
+    }
+    .mechanics__receptors {
+      margin-top: 42px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .mechanics__receptor {
+      min-height: 118px;
+      border-radius: 18px;
+      background: #FFFFFF;
+      border: 1px solid rgba(92, 72, 146, 0.16);
+      padding: 22px;
+    }
+    .mechanics__receptor-code {
+      display: block;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 32px;
+      line-height: 1;
+      font-weight: 700;
+      color: var(--c-mech-accent);
+    }
+    .mechanics__receptor-label {
+      display: block;
+      margin-top: 14px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 400;
+      color: var(--c-mech-muted);
+    }
+
+    .mechanics__chart {
+      position: relative;
+      min-height: 520px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.18)),
+        var(--c-mech-bg);
+    }
+    .mechanics__chart-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 28px;
+      margin-bottom: 44px;
+    }
+    .mechanics__chart-title {
+      margin: 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 22px;
+      line-height: 1.25;
+      font-weight: 600;
+      color: var(--c-mech-text);
+    }
+    .mechanics__chart-value {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 68px;
+      line-height: 0.9;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: rgba(92, 72, 146, 0.18);
+      white-space: nowrap;
+    }
+    .mechanics__graph {
+      width: 100%;
+      height: 256px;
+      overflow: visible;
+    }
+    .mechanics__graph-grid {
+      stroke: rgba(26, 40, 71, 0.08);
+      stroke-width: 1;
+    }
+    .mechanics__graph-base {
+      fill: none;
+      stroke: rgba(26, 40, 71, 0.12);
+      stroke-width: 2;
+    }
+    .mechanics__graph-line {
+      fill: none;
+      stroke: var(--c-mech-accent);
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 760;
+      stroke-dashoffset: calc(760 * (1 - var(--mechanics-progress, 0)));
+      transition: stroke-dashoffset 0.08s linear;
+    }
+    .mechanics__axis {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--c-mech-soft);
+    }
+    .mechanics__axis span:nth-child(2) { text-align: center; }
+    .mechanics__axis span:nth-child(3) { text-align: right; }
+
+    .mechanics__formats {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: stretch;
+    }
+    .mechanics__formats-copy {
+      border-radius: 24px;
+      border: 1px solid var(--c-mech-line);
+      padding: 36px 40px;
+    }
+    .mechanics__formats-title {
+      margin: 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 24px;
+      line-height: 1.25;
+      font-weight: 600;
+      color: var(--c-mech-text);
+    }
+    .mechanics__formats-text {
+      margin: 18px 0 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      font-weight: 400;
+      color: var(--c-mech-muted);
+      max-width: 600px;
+    }
+    .mechanics__format-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .mechanics__format-card {
+      border-radius: 24px;
+      background: var(--c-mech-text);
+      color: #FFFFFF;
+      padding: 30px;
+      min-height: 190px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .mechanics__format-card:nth-child(2) {
+      background: var(--c-mech-accent);
+    }
+    .mechanics__format-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.28);
+      display: grid;
+      place-items: center;
+      transition: transform 0.3s ease;
+    }
+    .mechanics__format-card:hover .mechanics__format-icon {
+      transform: scale(1.25);
+    }
+    .mechanics__format-name {
+      margin: 34px 0 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 18px;
+      line-height: 1.2;
+      font-weight: 500;
+    }
+
+    /* Format list — hidden on desktop, shown on mobile */
+    .mechanics__format-list { display: none; }
+
+    .mechanics__path {
+      margin-top: 78px;
+      position: relative;
+      padding: 0 8px;
+    }
+    .mechanics__path-line {
+      position: absolute;
+      top: 34px;
+      left: 8px;
+      right: 8px;
+      height: 2px;
+      background: var(--c-mech-line);
+      overflow: hidden;
+    }
+    .mechanics__path-line::before {
+      content: '';
+      display: block;
+      width: calc(var(--steps-progress, 0) * 100%);
+      height: 100%;
+      background: var(--c-mech-accent);
+      transition: width 0.08s linear;
+    }
+    .mechanics__steps {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 26px;
+    }
+    /* Dashed arc connectors — hidden on desktop */
+    .mechanics__step-arc { display: none; }
+    /* Step icons — hidden on desktop */
+    .mechanics__step-icon { display: none; }
+    .mechanics__step {
+      padding-top: 84px;
+    }
+    .mechanics__dot {
+      position: absolute;
+      top: 24px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 2px solid var(--c-mech-accent);
+      box-shadow: 0 0 0 10px #FFFFFF;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .mechanics__step:nth-of-type(1) .mechanics__dot { left: 0; }
+    .mechanics__step:nth-of-type(2) .mechanics__dot { left: calc(50% - 11px); }
+    .mechanics__step:nth-of-type(3) .mechanics__dot { right: 0; }
+    .mechanics__step-card {
+      min-height: 236px;
+      border-radius: 24px;
+      border: 1px solid var(--c-mech-line);
+      padding: 30px;
+      background: #FFFFFF;
+      transform: translateY(10px);
+      opacity: 0.72;
+      transition: opacity 0.35s ease, transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+    .mechanics__step.is-active .mechanics__dot {
+      background: var(--c-mech-accent);
+      transform: scale(1.08);
+    }
+    .mechanics__step.is-active .mechanics__step-card {
+      opacity: 1;
+      transform: translateY(0);
+      border-color: rgba(92, 72, 146, 0.22);
+      box-shadow: 0 18px 60px rgba(26, 40, 71, 0.08);
+    }
+    .mechanics__step-period {
+      display: block;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--c-mech-accent);
+    }
+    .mechanics__step-title {
+      margin: 22px 0 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 28px;
+      line-height: 1.12;
+      font-weight: 600;
+      color: var(--c-mech-text);
+    }
+    .mechanics__step-text {
+      margin: 18px 0 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 15px;
+      line-height: 1.55;
+      font-weight: 400;
+      color: var(--c-mech-muted);
+    }
+    .mechanics__note {
+      margin: 64px auto 0;
+      max-width: 1160px;
+      border-radius: 999px;
+      background: rgba(92, 72, 146, 0.08);
+      border: 1px solid rgba(92, 72, 146, 0.14);
+      padding: 24px 34px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      font-weight: 400;
+      text-align: center;
+      color: var(--c-mech-muted);
+    }
+    .mechanics__note strong {
+      color: var(--c-mech-text);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       BLOCK 5 — SOCIAL PROOF
+    ========================================================================== */
+    :root {
+      --c-proof-text:   #1A2847;
+      --c-proof-muted:  rgba(26, 40, 71, 0.54);
+      --c-proof-line:   rgba(26, 40, 71, 0.10);
+      --c-proof-accent: #5C4892;
+      --c-proof-bg:     #F7F6FA;
+    }
+
+    .proof {
+      position: relative;
+      background: #FFFFFF;
+      padding: 132px 140px 150px;
+      color: var(--c-proof-text);
+      overflow: hidden;
+    }
+    .proof__inner {
+      max-width: 1640px;
+      margin: 0 auto;
+    }
+    .proof__head {
+      display: block;
+      margin-bottom: 70px;
+    }
+    .proof__kicker {
+      margin: 0 0 26px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--c-proof-accent);
+    }
+    .proof__title {
+      margin: 0;
+      max-width: 980px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 76px;
+      line-height: 0.98;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--c-proof-text);
+    }
+    .proof__title em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--c-proof-accent);
+    }
+    .proof__lead {
+      display: none;
+      margin: 0 0 8px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 18px;
+      line-height: 1.55;
+      font-weight: 400;
+      color: var(--c-proof-muted);
+    }
+    .proof__grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 26px;
+    }
+    .proof__card {
+      border-radius: 24px;
+      border: 1px solid var(--c-proof-line);
+      background: var(--c-proof-bg);
+      overflow: hidden;
+    }
+    .proof__compare {
+      --split: 50;
+      position: relative;
+      height: 520px;
+      overflow: hidden;
+      background: #EAE7F0;
+    }
+    .proof__image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      max-width: none;
+      user-select: none;
+      pointer-events: none;
+    }
+    .proof__image--after {
+      clip-path: inset(0 0 0 calc(var(--split) * 1%));
+    }
+    .proof__divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: calc(var(--split) * 1%);
+      width: 2px;
+      background: #FFFFFF;
+      box-shadow: 0 0 0 1px rgba(26, 40, 71, 0.08);
+      transform: translateX(-1px);
+      pointer-events: none;
+    }
+    .proof__divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      box-shadow: 0 12px 34px rgba(26, 40, 71, 0.18);
+      transform: translate(-50%, -50%);
+    }
+    .proof__range {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: ew-resize;
+    }
+    .proof__label {
+      position: absolute;
+      top: 24px;
+      z-index: 2;
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      font-family: 'Unbounded', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--c-proof-text);
+    }
+    .proof__label--before { left: 22px; }
+    .proof__label--after { right: 22px; }
+    .proof__tap-hint { display: none; }
+    .proof__content {
+      padding: 30px;
+      background: #FFFFFF;
+    }
+    .proof__name {
+      margin: 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 22px;
+      line-height: 1.25;
+      font-weight: 600;
+      color: var(--c-proof-text);
+    }
+    .proof__quote {
+      margin: 18px 0 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 15px;
+      line-height: 1.55;
+      font-weight: 400;
+      color: var(--c-proof-muted);
+    }
+
+    /* ==========================================================================
+       BLOCK 6 — PRODUCT
+    ========================================================================== */
+    :root {
+      --c-product-text:   #1A2847;
+      --c-product-muted:  rgba(26, 40, 71, 0.54);
+      --c-product-line:   rgba(26, 40, 71, 0.10);
+      --c-product-accent: #5C4892;
+      --c-product-bg:     #F7F6FA;
+    }
+
+    .product {
+      position: relative;
+      background: #FFFFFF;
+      padding: 132px 140px 154px;
+      color: var(--c-product-text);
+    }
+    .product__inner {
+      max-width: 1640px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 64px;
+      align-items: center;
+    }
+
+    /* --- Visual (left) — clean white, no card --- */
+    .product__visual {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 680px;
+    }
+    .product__slide-area {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+    }
+    .product__photo {
+      max-height: 760px;
+      max-width: 100%;
+      width: auto;
+      object-fit: contain;
+      filter: none;
+      transition: opacity 0.4s ease, transform 0.45s ease;
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .product__photo.product__photo--active {
+      position: relative;
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .product__visual:hover .product__photo--active {
+      transform: scale(1.06) rotate(-2.5deg);
+    }
+    .product__arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(26,40,71,0.12);
+      background: #FFFFFF;
+      color: var(--c-text);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 4px 16px rgba(26,40,71,0.08);
+    }
+    .product__arrow:hover {
+      background: var(--c-accent);
+      border-color: var(--c-accent);
+      color: #FFFFFF;
+      transform: translateY(-50%) scale(1.08);
+    }
+    .product__arrow--left { left: -24px; }
+    .product__arrow--right { right: -24px; }
+    .product__dots {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+    }
+    .product__dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(26,40,71,0.15);
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.25s ease;
+    }
+    .product__dot--active {
+      background: var(--c-accent);
+      transform: scale(1.2);
+    }
+
+    /* --- Copy (right) — open layout on white, like hero --- */
+    .product__copy {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .product__kicker {
+      margin: 0 0 28px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--c-text-50);
+    }
+    .product__title {
+      margin: 0;
+      max-width: 720px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 64px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--c-text);
+    }
+    .product__title-accent {
+      color: var(--c-accent);
+    }
+    .product__subtitle {
+      margin: 28px 0 0;
+      max-width: 620px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 22px;
+      line-height: 1.45;
+      font-weight: 300;
+      color: var(--c-text-60);
+    }
+    .product__includes {
+      margin: 40px 0 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      font-weight: 400;
+      color: var(--c-text-50);
+      letter-spacing: 0.5px;
+    }
+    .product__name-row {
+      margin: 36px 0 0;
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+    }
+    .product__product-name {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--c-text);
+      transition: opacity 0.3s ease;
+    }
+    .product__product-dose {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--c-text-60);
+      transition: opacity 0.3s ease;
+    }
+    .product__pills {
+      margin: 18px 0 0;
+      display: flex;
+      gap: 8px;
+    }
+    .product__pill {
+      border-radius: 999px;
+      border: 1px solid rgba(26,40,71,0.12);
+      background: transparent;
+      padding: 10px 22px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--c-text-60);
+      cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+    .product__pill--active {
+      background: var(--c-accent);
+      color: #FFFFFF;
+      border-color: var(--c-accent);
+    }
+    .product__pill:hover:not(.product__pill--active) {
+      border-color: var(--c-accent);
+      color: var(--c-accent);
+    }
+    .product__bottom {
+      margin-top: 56px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 32px;
+      width: 100%;
+    }
+    .product__price-label {
+      display: block;
+      margin-bottom: 10px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--c-text-50);
+    }
+    .product__price {
+      display: block;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 76px;
+      line-height: 0.9;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--c-text);
+      white-space: nowrap;
+    }
+    .product__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: var(--c-accent);
+      color: #FFFFFF;
+      padding: 22px 34px;
+      min-width: 250px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 600;
+      transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .product__cta:hover {
+      background: var(--c-text);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 44px rgba(26, 40, 71, 0.22);
+    }
+    .product__wholesale {
+      grid-column: 1 / -1;
+      margin: 20px auto 0;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 400;
+      color: var(--c-product-muted);
+    }
+    .product__wholesale a {
+      color: var(--c-product-accent);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       BLOCK 7 — FAQ
+    ========================================================================== */
+    .faq {
+      position: relative;
+      background: #FFFFFF;
+      padding: 132px 140px 154px;
+    }
+    .faq__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .faq__kicker {
+      margin: 0 0 28px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--c-text-50);
+    }
+    .faq__title {
+      margin: 0 0 72px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 56px;
+      line-height: 1.05;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--c-text);
+    }
+    .faq__list {
+      border-top: 1px solid rgba(26, 40, 71, 0.10);
+    }
+
+    /* --- Accordion item --- */
+    .faq__item {
+      border-bottom: 1px solid rgba(26, 40, 71, 0.10);
+    }
+    .faq__question {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      padding: 36px 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 20px;
+      line-height: 1.35;
+      font-weight: 500;
+      color: var(--c-text);
+      text-align: left;
+      transition: color 0.2s ease;
+    }
+    .faq__question:hover {
+      color: var(--c-accent);
+    }
+    .faq__icon {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+    .faq__icon::before,
+    .faq__icon::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      background: var(--c-text);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .faq__icon::before {
+      width: 20px;
+      height: 2px;
+      transform: translate(-50%, -50%);
+    }
+    .faq__icon::after {
+      width: 2px;
+      height: 20px;
+      transform: translate(-50%, -50%);
+    }
+    .faq__item.is-open .faq__icon::after {
+      transform: translate(-50%, -50%) rotate(90deg);
+      opacity: 0;
+    }
+    .faq__answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+    }
+    .faq__answer-inner {
+      padding: 0 0 36px;
+      max-width: 860px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      font-weight: 400;
+      color: var(--c-text-60);
+    }
+
+    /* ==========================================================================
+       BLOCK 8 — QUIZ
+    ========================================================================== */
+    .cta-quiz {
+      position: relative;
+      background: #F7F6FA;
+      padding: 132px 140px 100px;
+    }
+    .quiz {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .quiz__header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .quiz__kicker {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--c-text-50);
+      margin: 0 0 20px;
+    }
+    .quiz__title {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--c-text);
+      margin: 0 0 16px;
+    }
+    .quiz__desc {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--c-text-60);
+      margin: 0;
+    }
+    .quiz__progress {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 40px;
+    }
+    .quiz__progress-dot {
+      flex: 1;
+      height: 4px;
+      border-radius: 4px;
+      background: rgba(26,40,71,0.08);
+      transition: background 0.4s ease;
+    }
+    .quiz__progress-dot.is-done { background: var(--c-accent); }
+    .quiz__progress-dot.is-current { background: var(--c-accent); opacity: 0.5; }
+    .quiz__step {
+      display: none;
+      animation: quizFadeUp 0.4s ease;
+    }
+    .quiz__step.is-active { display: block; }
+    @keyframes quizFadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .quiz__step-num {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--c-accent);
+      margin: 0 0 12px;
+    }
+    .quiz__step-question {
+      font-size: 26px;
+      font-weight: 600;
+      line-height: 1.25;
+      color: var(--c-text);
+      margin: 0 0 32px;
+    }
+    .quiz__options { display: grid; gap: 12px; }
+    .quiz__option {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      padding: 22px 26px;
+      border-radius: 18px;
+      border: 1px solid rgba(26,40,71,0.08);
+      background: #FFFFFF;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--c-text);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+    }
+    .quiz__option:hover {
+      border-color: var(--c-accent);
+      background: rgba(92,72,146,0.04);
+      transform: translateX(4px);
+    }
+    .quiz__option .dot {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 2px solid rgba(26,40,71,0.18);
+      flex-shrink: 0;
+      transition: border-color 0.2s ease;
+    }
+    .quiz__option:hover .dot { border-color: var(--c-accent); }
+    .quiz__checks { display: grid; gap: 12px; margin-bottom: 20px; }
+    .quiz__check {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      padding: 20px 24px;
+      border-radius: 18px;
+      border: 1px solid rgba(26,40,71,0.08);
+      background: #FFFFFF;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--c-text);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .quiz__check.is-checked {
+      border-color: rgba(220,50,50,0.3);
+      background: rgba(220,50,50,0.04);
+    }
+    .quiz__check .box {
+      width: 20px; height: 20px;
+      border-radius: 6px;
+      border: 2px solid rgba(26,40,71,0.18);
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      transition: all 0.2s ease;
+    }
+    .quiz__check.is-checked .box {
+      border-color: rgba(220,50,50,0.5);
+      background: rgba(220,50,50,0.1);
+    }
+    .quiz__check .box svg { opacity: 0; transition: opacity 0.2s ease; width: 12px; height: 12px; }
+    .quiz__check.is-checked .box svg { opacity: 1; }
+    .quiz__safe-btn {
+      width: 100%;
+      padding: 22px 26px;
+      border-radius: 18px;
+      border: 2px solid var(--c-accent);
+      background: rgba(92,72,146,0.06);
+      font-family: inherit;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--c-accent);
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+      margin-top: 8px;
+    }
+    .quiz__safe-btn:hover {
+      background: var(--c-accent);
+      color: #FFFFFF;
+      transform: translateY(-2px);
+    }
+    .quiz__result { text-align: center; padding: 20px 0; }
+    .quiz__result-icon { font-size: 48px; margin-bottom: 24px; }
+    .quiz__result-headline {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--c-text);
+      margin: 0 0 12px;
+      line-height: 1.2;
+    }
+    .quiz__result-kg {
+      font-size: 64px;
+      font-weight: 700;
+      color: var(--c-accent);
+      margin: 20px 0;
+      line-height: 1;
+    }
+    .quiz__result-text {
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--c-text-60);
+      margin: 0 0 40px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .quiz__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px 48px;
+      border-radius: 999px;
+      background: var(--c-accent);
+      color: #FFFFFF;
+      font-family: inherit;
+      font-size: 18px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+      text-decoration: none;
+    }
+    .quiz__cta:hover {
+      background: var(--c-text);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 44px rgba(26,40,71,0.22);
+    }
+    .quiz__sub-link {
+      display: block;
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--c-text-50);
+    }
+    .quiz__sub-link a {
+      color: var(--c-accent);
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .quiz__sub-link a:hover { text-decoration: underline; }
+    .quiz__wholesale {
+      text-align: center;
+      margin-top: 48px;
+      font-size: 14px;
+      color: var(--c-text-50);
+    }
+    .quiz__wholesale a {
+      color: var(--c-accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .quiz__wholesale a:hover { text-decoration: underline; }
+    .quiz__back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--c-text-50);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 24px;
+      transition: color 0.2s ease;
+    }
+    .quiz__back:hover { color: var(--c-accent); }
+    .quiz__back svg { width: 16px; height: 16px; }
+    .quiz__reset {
+      display: inline-flex;
+      align-items: center;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--c-text-50);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin-top: 24px;
+      transition: color 0.2s ease;
+    }
+    .quiz__reset:hover { color: var(--c-accent); }
+
+    /* ==========================================================================
+       FOOTER
+    ========================================================================== */
+    .footer {
+      background: #5C4792;
+      color: #FFFFFF;
+      padding: 64px 140px;
+    }
+    .footer__inner {
+      max-width: 1640px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+    }
+    .footer__logo {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #FFFFFF;
+    }
+    .footer__contacts {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.6);
+    }
+    .footer__contacts a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .footer__contacts a:hover { color: #FFFFFF; }
+    .footer__copy {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.35);
+    }
+    /* --- Certificate Modal --- */
+    .cert-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.65);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+      backdrop-filter: blur(6px);
+    }
+    .cert-modal.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+    .cert-modal__card {
+      position: relative;
+      width: 90vw;
+      max-width: 1400px;
+      height: 85vh;
+      background: #FFFFFF;
+      border-radius: 24px;
+      overflow: hidden;
+      transform: scale(0.92) translateY(20px);
+      transition: transform 0.35s ease;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.35);
+      margin-top: 40px;
+    }
+    .cert-modal.is-open .cert-modal__card {
+      transform: scale(1) translateY(0);
+    }
+    .cert-modal__close {
+      position: absolute;
+      top: -52px;
+      right: 0;
+      z-index: 2;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.5);
+      background: rgba(0,0,0,0.4);
+      color: #FFFFFF;
+      font-size: 28px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background 0.2s ease, transform 0.2s ease;
+      backdrop-filter: blur(8px);
+    }
+    .cert-modal__close:hover {
+      background: rgba(0,0,0,0.6);
+      transform: scale(1.1);
+    }
+    @media (max-width: 768px) {
+      .cert-modal__card { width: 95vw; height: 80vh; margin-top: 56px; border-radius: 16px; }
+      .cert-modal__close { width: 52px; height: 52px; font-size: 32px; top: -56px; right: 4px; }
+    }
+    .cert-modal__iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    /* ==========================================================================
+       MOBILE MENU — base styles (hidden on desktop)
+    ========================================================================== */
+    .nav__burger {
+      display: none;
+      width: 44px;
+      height: 44px;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      justify-self: end;
+      position: relative;
+      z-index: 201;
+    }
+    .nav__burger svg { stroke: var(--c-text); }
+    .nav__burger.is-active .nav__burger-l1 { transform: rotate(45deg); transform-origin: 5px 6px; }
+    .nav__burger.is-active .nav__burger-l2 { opacity: 0; }
+    .nav__burger.is-active .nav__burger-l3 { transform: rotate(-45deg); transform-origin: 5px 18px; }
+    .nav__burger line { transition: transform 0.3s ease, opacity 0.3s ease; }
+
+    .nav__mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: 100%;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      z-index: 200;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+    .nav__mobile-menu.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+    .nav__mobile-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 32px;
+    }
+    .nav__mobile-links a {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--c-text);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .nav__mobile-links a:hover { color: var(--c-accent); }
+    .nav__mobile-cta {
+      margin-top: 16px;
+      padding: 16px 40px !important;
+      border-radius: var(--r-pill);
+      border: 2px solid var(--c-text);
+      font-size: 18px !important;
+    }
+
+    /* ==========================================================================
+       CAROUSEL — base styles (hidden on desktop)
+    ========================================================================== */
+    .trans__carousel { display: none; }
+    .trans__carousel-heading {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.05;
+      margin: 0 0 32px;
+      color: var(--c-text);
+    }
+    .trans__carousel-heading em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--c-accent);
+    }
+
+    /* ==========================================================================
+       RESPONSIVE — TABLET (max-width: 1024px)
+    ========================================================================== */
+    @media (max-width: 1024px) {
+      /* Foundation */
+      .page { width: 100%; padding-top: 56px; }
+      .topbar__inner { width: 100%; padding: 0 24px; }
+
+      /* Navbar — burger on tablet too */
+      .nav__menu { display: none !important; }
+      .nav__cta { display: none !important; }
+      .nav__burger { display: flex; }
+      .nav__mobile-menu { display: block; }
+      .topbar__inner { grid-template-columns: 1fr auto; }
+
+      /* Hero */
+      .hero {
+        height: clamp(760px, 84vw, 828px);
+        min-height: 0;
+        padding: 0;
+        margin: 0 8px 8px;
+        border-radius: 24px;
+      }
+      .hero__content {
+        position: absolute;
+        top: clamp(32px, 5vw, 56px);
+        left: clamp(28px, 5vw, 64px);
+        width: calc(100% - clamp(56px, 10vw, 128px));
+        gap: clamp(30px, 4.2vw, 42px);
+        z-index: 5;
+      }
+      .hero__woman {
+        position: absolute;
+        top: auto;
+        right: clamp(-70px, -5vw, -32px);
+        bottom: clamp(-116px, -9vw, -72px);
+        left: auto;
+        transform: none;
+        width: clamp(600px, 64vw, 700px);
+        max-width: none;
+        height: auto;
+        margin: 0;
+        z-index: 3;
+        object-fit: contain;
+        object-position: bottom right;
+      }
+      .hero__title {
+        width: min(520px, 50%);
+        font-size: clamp(36px, 4.2vw, 48px);
+        line-height: 0.96;
+      }
+      .hero__desc {
+        font-size: clamp(14px, 1.6vw, 17px);
+        line-height: 1.25;
+        max-width: min(420px, 42%);
+      }
+      .hero__cta { font-size: 16px; padding: 16px 36px; }
+      .cta-group { gap: clamp(20px, 4vw, 40px); }
+      .metrics {
+        position: static;
+        width: min(580px, 80vw);
+        gap: 12px;
+        z-index: 6;
+      }
+      .metric-card {
+        height: clamp(100px, 12vw, 116px);
+        padding: 12px 14px;
+        gap: 14px;
+      }
+      .metric-card__title { font-size: clamp(13px, 1.55vw, 15px); }
+      .metric-card__sub { font-size: clamp(10px, 1.25vw, 12px); }
+
+      /* Trap — same as mobile: white bg, no photos, icons instead */
+      .trap__intro { padding: 80px 40px 40px; }
+      .trap__heading { font-size: 52px; }
+      .trap__photo { display: none !important; }
+      .trap__fade-top, .trap__fade-bottom { display: none !important; }
+      .trap__canvas.is-dark .trap__label-num { color: var(--c-trap-accent); text-shadow: none; }
+      .trap__canvas.is-dark .trap__label-day { color: var(--c-trap-text); text-shadow: none; }
+      .trap__canvas.is-dark .trap__desc-text { color: var(--c-trap-muted); text-shadow: none; }
+      .trap__canvas.is-dark .trap__ring-bg { stroke: rgba(26,40,71,0.08); }
+      .trap__canvas.is-dark .trap__arc { stroke: var(--c-trap-accent); }
+      .trap__canvas.is-dark .trap__dot { fill: var(--c-trap-text); }
+      .trap__canvas.is-dark .trap__pointer circle { fill: var(--c-trap-accent); filter: none; }
+      .trap__feather { display: block; }
+      .trap__svg { overflow: visible; }
+      .trap__circle {
+        width: min(calc(var(--canvas-h, 1080px) * 0.48), 55vw);
+        height: min(calc(var(--canvas-h, 1080px) * 0.48), 55vw);
+      }
+      /* Floating animations for feather icons (tablet) */
+      @keyframes featherFloat1 {
+        0%, 100% { transform: translate(0, 0); }
+        25%  { transform: translate(3px, -4px); }
+        50%  { transform: translate(-2px, -6px); }
+        75%  { transform: translate(4px, -2px); }
+      }
+      @keyframes featherFloat2 {
+        0%, 100% { transform: translate(0, 0); }
+        33%  { transform: translate(-4px, 3px); }
+        66%  { transform: translate(3px, -4px); }
+      }
+      @keyframes featherFloat3 {
+        0%, 100% { transform: translate(0, 0); }
+        20%  { transform: translate(2px, 5px); }
+        50%  { transform: translate(-3px, -3px); }
+        80%  { transform: translate(4px, 2px); }
+      }
+      @keyframes featherFloat4 {
+        0%, 100% { transform: translate(0, 0); }
+        30%  { transform: translate(-5px, -2px); }
+        60%  { transform: translate(2px, 4px); }
+      }
+      @keyframes featherFloat5 {
+        0%, 100% { transform: translate(0, 0); }
+        40%  { transform: translate(3px, 5px); }
+        70%  { transform: translate(-4px, -3px); }
+      }
+      .trap__feather--float1.is-visible { animation: featherFloat1 4.2s ease-in-out infinite; }
+      .trap__feather--float2.is-visible { animation: featherFloat2 3.6s ease-in-out infinite; }
+      .trap__feather--float3.is-visible { animation: featherFloat3 5.0s ease-in-out infinite; }
+      .trap__feather--float4.is-visible { animation: featherFloat4 4.8s ease-in-out infinite; }
+      .trap__feather--float5.is-visible { animation: featherFloat5 3.9s ease-in-out infinite; }
+
+      .trap__stats { padding: 60px 40px 80px; gap: 40px; }
+      .trap__stat-num { font-size: 120px; }
+      .trap__stat-label { font-size: 15px; }
+
+      /* Transformation */
+      .trans__split { grid-template-columns: 0.45fr 0.55fr; }
+      .trans__side { padding: calc(var(--canvas-h, 1080px) * 80 / 1080) 40px calc(var(--canvas-h, 1080px) * 60 / 1080) 40px; }
+      .trans__heading { font-size: 38px; }
+
+      /* Mechanics */
+      .mechanics { padding: 80px 40px 80px; }
+      .mechanics__title { font-size: 48px; }
+      .mechanics__subtitle { font-size: 18px; }
+      .mechanics__grid { grid-template-columns: 1fr 1fr; }
+      .mechanics__formats { grid-template-columns: 1fr; }
+      .mechanics__format-cards { grid-template-columns: 1fr 1fr; }
+
+      /* Proof */
+      .proof { padding: 80px 40px; }
+      .proof__title { font-size: 48px; }
+      .proof__compare { height: 380px; }
+
+      /* Product */
+      .product { padding: 80px 40px; }
+      .product__inner { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .product__visual { min-height: 360px; }
+      .product__photo { max-height: 500px; max-width: 100%; }
+      .product__title { font-size: 42px; }
+      .product__price { font-size: 48px; }
+      .product__arrow--left { left: 8px; }
+      .product__arrow--right { right: 8px; }
+
+      /* FAQ */
+      .faq { padding: 80px 40px; }
+      .faq__title { font-size: 42px; }
+
+      /* Quiz */
+      .cta-quiz { padding: 80px 40px; }
+
+      /* Footer */
+      .footer { padding: 40px 24px; }
+      .footer__inner { flex-wrap: wrap; justify-content: center; gap: 16px; }
+      .footer__contacts { flex-wrap: wrap; justify-content: center; gap: 16px; font-size: 13px; }
+    }
+
+    @media (min-width: 900px) and (max-width: 1024px) {
+      .cta-group { gap: clamp(40px, 7vw, 70px); }
+    }
+
+    @media (min-width: 641px) and (max-width: 899px) {
+      .hero { height: clamp(720px, 88vw, 800px); }
+      .hero__woman {
+        right: clamp(-96px, -9vw, -58px);
+        width: clamp(560px, 72vw, 640px);
+      }
+      .hero__title {
+        width: min(610px, 66%);
+        font-size: clamp(38px, 5vw, 46px);
+      }
+      .hero__desc { max-width: min(520px, 52%); }
+      .cta-group { gap: clamp(40px, 8vw, 70px); }
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) and (max-height: 760px) {
+      .hero {
+        height: calc(100svh - 100px);
+        min-height: 480px;
+      }
+      .hero__content {
+        top: clamp(24px, 4vh, 34px);
+        gap: clamp(18px, 3vh, 28px);
+      }
+      .hero__title {
+        width: min(610px, 64%);
+        font-size: clamp(32px, 4.6vw, 44px);
+        line-height: 0.95;
+      }
+      .hero__desc {
+        max-width: min(520px, 54%);
+        font-size: clamp(14px, 1.8vw, 17px);
+      }
+      .hero__woman {
+        right: clamp(-88px, -7vw, -40px);
+        bottom: clamp(-86px, -10vw, -56px);
+        width: clamp(520px, 62vw, 620px);
+      }
+      .cta-group { gap: clamp(44px, 8vh, 64px); }
+      .metric-card {
+        height: 94px;
+        padding: 12px 18px;
+        gap: 10px;
+      }
+    }
+
+    /* ==========================================================================
+       RESPONSIVE — MOBILE LARGE (max-width: 768px)
+    ========================================================================== */
+    @media (max-width: 640px) {
+      /* Navbar */
+      .nav__menu { display: none !important; }
+      .nav__cta { display: none !important; }
+      .nav__burger { display: flex; }
+      .nav__mobile-menu { display: block; }
+      .topbar__inner { grid-template-columns: 1fr auto; }
+
+      /* Hero — match Figma Frame 11 (430px frame, hero block 796px+) */
+      .hero {
+        height: clamp(700px, 190vw, 830px);
+        min-height: 0;
+        margin: 0 8px 8px;
+        border-radius: 16px;
+        padding: 16px 16px 0 16px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Content — static so .metrics absolute anchors to .hero */
+      .hero__content {
+        position: static;
+        top: auto;
+        left: auto;
+        width: auto;
+        gap: clamp(34px, 10vw, 48px);
+        z-index: auto;
+        align-items: flex-start;
+      }
+      /* z-index on individual children instead */
+      .badge,
+      .hero__title,
+      .hero__desc { position: relative; z-index: 5; }
+
+      .hero__title {
+        font-size: clamp(24px, 6.55vw, 28px);
+        line-height: 90%;
+        letter-spacing: 0;
+        width: min(100%, 336px);
+      }
+      .hero__desc {
+        font-size: 11px; line-height: 115%; max-width: 100%;
+        color: rgba(26, 40, 71, 0.6);
+        text-shadow: none;
+      }
+
+      /* CTA group — static so .metrics anchors to .hero */
+      .cta-group {
+        margin-top: clamp(80px, 20vw, 110px);
+        gap: clamp(46px, 12vw, 60px);
+        position: static;
+        z-index: auto;
+        width: 100%;
+      }
+      .hero__cta {
+        font-size: 14px; padding: 16px 32px; letter-spacing: 0.5px;
+        position: relative; z-index: 5;
+        box-shadow: 0 4px 16px rgba(26, 40, 71, 0.15);
+      }
+
+      /* Badge — Figma: padding 16/8, gap 8, text 8px */
+      .badge { padding: 8px 16px; gap: 8px; }
+      .badge__icon { width: 12px; height: 12px; }
+      .badge__text { font-size: 8px; letter-spacing: 0.5px; }
+
+      /* Woman photo — bigger, bottom-anchored */
+      .hero__woman {
+        position: absolute;
+        display: block;
+        bottom: clamp(-88px, -14vw, -50px);
+        left: 50%;
+        transform: translateX(-55%);
+        top: auto;
+        width: 115%;
+        max-width: 560px;
+        height: auto;
+        margin: 0;
+        z-index: 2;
+        object-fit: contain;
+        object-position: bottom center;
+      }
+
+      /* Clouds — layered on top of each other (like Figma) */
+      .hero__cloud { display: block; }
+      .hero__cloud--bg {
+        top: clamp(120px, 31vw, 138px);
+        bottom: auto;
+        left: min(-420px, -104vw);
+        width: clamp(1180px, 314vw, 1350px);
+        height: 637.46px;
+        opacity: 0.29;
+        transform: none;
+        z-index: 1;
+      }
+      .hero__cloud--mid {
+        top: clamp(294px, 76vw, 326px);
+        bottom: auto;
+        left: clamp(-222px, -54vw, -188px);
+        width: clamp(850px, 220vw, 960px);
+        height: 349px;
+        transform: none;
+        opacity: 1;
+        z-index: 2;
+      }
+
+      /* Metrics — in normal flow, edge-to-edge relative to .hero */
+      .metrics {
+        position: relative;
+        left: 0;
+        right: 0;
+        bottom: auto;
+        display: flex;
+        width: calc(100% + 32px);
+        margin-left: -16px;
+        z-index: 5;
+        overflow: hidden;
+        grid-template-columns: none;
+        gap: 0;
+      }
+      .metrics-ticker {
+        display: flex;
+        gap: 8px;
+        animation: tickerScroll 14s linear infinite;
+        width: max-content;
+        padding-left: 0;
+      }
+      @keyframes tickerScroll {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+
+      /* Metric card — glass, no white icon bg */
+      .metric-card {
+        height: auto;
+        min-width: 131px;
+        flex-shrink: 0;
+        padding: 12px 16px;
+        gap: 16px;
+        border-radius: 24px;
+        background: rgba(255,255,255,0.25);
+        border: 1px solid rgba(255,255,255,0.3);
+        backdrop-filter: blur(16px) saturate(140%);
+        -webkit-backdrop-filter: blur(16px) saturate(140%);
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.5),
+          0 4px 16px rgba(26,40,71,0.06);
+      }
+      .metric-card:hover {
+        transform: none;
+        background: rgba(255,255,255,0.4);
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.5),
+          0 4px 16px rgba(26,40,71,0.06);
+      }
+      .metric-card__head { gap: 8px; }
+      .metric-card__icon {
+        width: 16px; height: 16px;
+        stroke: var(--c-accent);
+        background: none;
+        border-radius: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .metric-card__title { font-size: 12px; font-weight: 500; letter-spacing: 0.5px; white-space: nowrap; line-height: 1.25; }
+      .metric-card__sub { font-size: 8px; font-weight: 400; letter-spacing: 0.5px; color: rgba(26,40,71,0.5); }
+
+      /* Trap */
+      .trap__intro { padding: 60px 20px 30px; }
+      .trap__heading { font-size: 36px; }
+
+      /* Trap — white background, no photos, no dark mode on mobile */
+      .trap__photo { display: none !important; }
+      .trap__fade-top, .trap__fade-bottom { display: none !important; }
+      .trap__canvas.is-dark .trap__label-num { color: var(--c-trap-accent); text-shadow: none; }
+      .trap__canvas.is-dark .trap__label-day { color: var(--c-trap-text); text-shadow: none; }
+      .trap__canvas.is-dark .trap__desc-text { color: var(--c-trap-muted); text-shadow: none; }
+      .trap__canvas.is-dark .trap__ring-bg { stroke: rgba(26,40,71,0.08); }
+      .trap__canvas.is-dark .trap__arc { stroke: var(--c-trap-accent); }
+      .trap__canvas.is-dark .trap__dot { fill: var(--c-trap-text); }
+      .trap__canvas.is-dark .trap__pointer circle { fill: var(--c-trap-accent); filter: none; }
+
+      /* Feather icons — visible on mobile */
+      .trap__feather {
+        display: block;
+      }
+      .trap__svg {
+        overflow: visible;
+      }
+
+      /* Floating animations — each icon drifts gently with a unique rhythm */
+      @keyframes featherFloat1 {
+        0%, 100% { transform: translate(0, 0); }
+        25%  { transform: translate(3px, -4px); }
+        50%  { transform: translate(-2px, -6px); }
+        75%  { transform: translate(4px, -2px); }
+      }
+      @keyframes featherFloat2 {
+        0%, 100% { transform: translate(0, 0); }
+        33%  { transform: translate(-4px, 3px); }
+        66%  { transform: translate(3px, -4px); }
+      }
+      @keyframes featherFloat3 {
+        0%, 100% { transform: translate(0, 0); }
+        20%  { transform: translate(2px, 5px); }
+        50%  { transform: translate(-3px, -3px); }
+        80%  { transform: translate(4px, 2px); }
+      }
+      @keyframes featherFloat4 {
+        0%, 100% { transform: translate(0, 0); }
+        30%  { transform: translate(-5px, -2px); }
+        60%  { transform: translate(2px, 4px); }
+      }
+      @keyframes featherFloat5 {
+        0%, 100% { transform: translate(0, 0); }
+        40%  { transform: translate(3px, 5px); }
+        70%  { transform: translate(-4px, -3px); }
+      }
+      .trap__feather--float1.is-visible { animation: featherFloat1 4.2s ease-in-out infinite; }
+      .trap__feather--float2.is-visible { animation: featherFloat2 3.6s ease-in-out infinite; }
+      .trap__feather--float3.is-visible { animation: featherFloat3 5.0s ease-in-out infinite; }
+      .trap__feather--float4.is-visible { animation: featherFloat4 4.8s ease-in-out infinite; }
+      .trap__feather--float5.is-visible { animation: featherFloat5 3.9s ease-in-out infinite; }
+
+      /* Circle — fit within mobile viewport */
+      .trap__circle {
+        width: min(calc(var(--canvas-h, 1080px) * 0.58), 75vw);
+        height: min(calc(var(--canvas-h, 1080px) * 0.58), 75vw);
+      }
+
+      /* Descriptions — responsive width */
+      .trap__descriptions {
+        width: 90vw;
+        max-width: 400px;
+      }
+      .trap__desc-text {
+        font-size: calc(var(--canvas-h, 1080px) * 16 / 1080);
+        max-width: 100%;
+      }
+
+      /* Labels — smaller on mobile */
+      .trap__label-num {
+        font-size: calc(var(--canvas-h, 1080px) * 48 / 1080);
+      }
+      .trap__label-day {
+        font-size: calc(var(--canvas-h, 1080px) * 9 / 1080);
+      }
+
+      /* Break button — smaller on mobile */
+      .trap__break {
+        width: calc(var(--canvas-h, 1080px) * 140 / 1080);
+        height: calc(var(--canvas-h, 1080px) * 140 / 1080);
+      }
+      .trap__break-line-1 { font-size: 9px; letter-spacing: 1.5px; }
+      .trap__break-line-2 { font-size: 20px; }
+
+      /* Stats — horizontal, compact */
+      .trap__stats { padding: 32px 16px 48px; gap: 16px; grid-template-columns: 1fr 1fr; }
+      .trap__stat-num { font-size: 52px; }
+      .trap__stat-num sup { font-size: 28px; margin-top: 4px; }
+      .trap__stat { gap: 12px; }
+      .trap__stat-label { font-size: 11px; }
+      .trap__stats-source { font-size: 9px; }
+
+      /* Transformation — same sticky split as desktop, stacked layout */
+      .trans__carousel { display: none; }
+      .trans__zone { display: block; }
+      .trans__split {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr auto;
+        align-content: end;
+      }
+
+      /* Text section — top, vertically centered in available space */
+      .trans__side {
+        padding: 72px 20px 24px;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        gap: 20px;
+      }
+      .trans__heading { font-size: 32px; margin-bottom: 20px; max-width: 100%; }
+      .trans__subtitle { font-size: 12px; max-width: 100%; margin-bottom: 12px; }
+
+      /* Hide menu items on mobile */
+      .trans__menu { display: none; }
+
+      /* CTA — centered */
+      .trans__cta {
+        font-size: 14px; padding: 14px 32px;
+        align-self: center;
+        margin-top: 28px;
+      }
+
+      /* Photo stage — square 1:1, sticks to bottom */
+      .trans__stage { min-height: unset; aspect-ratio: 1 / 1; }
+
+      /* Pure crossfade — no translateX, no white gaps ever */
+      .trans__state {
+        padding: 40px 24px;
+        transition: opacity 0.7s ease;
+        transform: none;
+        opacity: 0;
+      }
+      .trans__state.is-active {
+        transform: none;
+        opacity: 1;
+      }
+
+      .trans__state-num { font-size: 64px; margin-bottom: -12px; }
+      .trans__state-title { font-size: 22px; }
+      .trans__state-desc { font-size: 12px; max-width: 100%; margin-top: 8px; }
+
+      /* Mechanics */
+      .mechanics { padding: 60px 20px; }
+      .mechanics__title { font-size: 32px; }
+      .mechanics__subtitle { font-size: 16px; }
+      .mechanics__receptors { grid-template-columns: 1fr; }
+
+      /* Grid — single column, uniform gaps */
+      .mechanics__grid { grid-template-columns: 1fr; gap: 32px; }
+      .mechanics__formats { margin-top: 32px; }
+      .mechanics__path { margin-top: 32px; }
+
+      /* Hide graph entirely on mobile */
+      .mechanics__chart { display: none !important; }
+
+      /* «Принцип дії» — fully visible, no accordion, no arrow */
+      .mechanics__panel {
+        padding: 20px 24px;
+        max-height: none;
+        overflow: visible;
+        cursor: default;
+      }
+      .mechanics__panel--medical { min-height: unset; }
+      .mechanics__eyebrow {
+        position: relative;
+        padding-right: 0;
+        margin-bottom: 18px;
+      }
+      .mechanics__eyebrow::after { display: none; }
+      .mechanics__lead { font-size: 20px; }
+      .mechanics__body { font-size: 14px; line-height: 1.6; }
+
+      /* «Формат застосування» — single purple card, white text */
+      .mechanics__formats {
+        display: block;
+        cursor: default;
+        max-height: none;
+        overflow: visible;
+        padding: 24px;
+        border-radius: 24px;
+        background: var(--c-accent);
+        border: none;
+      }
+      .mechanics__formats-copy {
+        border: none;
+        padding: 0;
+        border-radius: 0;
+      }
+      .mechanics__formats .mechanics__eyebrow {
+        color: rgba(255,255,255,0.7);
+        padding-right: 0;
+      }
+      .mechanics__formats .mechanics__eyebrow::after { display: none; }
+      .mechanics__formats-title {
+        font-size: 16px !important;
+        line-height: 1.35;
+        color: #fff;
+      }
+      .mechanics__formats-text {
+        font-size: 13px;
+        color: rgba(255,255,255,0.65);
+      }
+      /* Hide desktop format-cards, show inline list */
+      .mechanics__format-cards { display: none !important; }
+      .mechanics__format-list {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 16px 0 0;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .mechanics__format-list li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'Unbounded', sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        color: #fff;
+      }
+      .mechanics__format-list svg {
+        flex-shrink: 0;
+        stroke: rgba(255,255,255,0.8);
+      }
+      .mechanics__format-list svg circle {
+        fill: none;
+        stroke: rgba(255,255,255,0.8);
+      }
+
+      /* Step cards — fully visible, no arrows, compact */
+      .mechanics__steps { grid-template-columns: 1fr; gap: 0; }
+      .mechanics__path-line { display: none; }
+      .mechanics__dot { display: none; }
+      .mechanics__step { padding-top: 0; }
+      .mechanics__step-card {
+        opacity: 1;
+        transform: none;
+        cursor: default;
+        max-height: none;
+        overflow: visible;
+        padding: 16px 20px;
+      }
+      .mechanics__step-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        background: rgba(92, 72, 146, 0.08);
+        color: var(--c-mech-accent, #5C4892);
+        margin-bottom: 12px;
+        flex-shrink: 0;
+      }
+      .mechanics__step-period {
+        padding-right: 0;
+        font-size: 11px;
+      }
+      .mechanics__step-period::after { display: none; }
+      .mechanics__step-title { font-size: 18px; }
+      .mechanics__step-text { font-size: 13px; }
+
+      /* Dashed arc connectors between step cards */
+      .mechanics__step-arc {
+        display: block;
+        width: 40px;
+        height: 48px;
+        margin: 0 auto;
+      }
+      .mechanics__step-arc path {
+        fill: none;
+        stroke: var(--c-mech-accent, #5C4892);
+        stroke-width: 2;
+        stroke-dasharray: 6 4;
+        stroke-linecap: round;
+        opacity: 0.4;
+      }
+
+      /* Scroll-reveal for steps */
+      .mechanics__step {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+      .mechanics__step.is-revealed {
+        opacity: 1;
+        transform: none;
+      }
+      .mechanics__step-arc {
+        opacity: 0;
+        transition: opacity 0.4s ease 0.2s;
+      }
+      .mechanics__step-arc.is-revealed {
+        opacity: 1;
+      }
+      .mechanics__step-arc path {
+        stroke-dashoffset: 80;
+        transition: stroke-dashoffset 0.8s ease;
+      }
+      .mechanics__step-arc.is-revealed path {
+        stroke-dashoffset: 0;
+      }
+
+      /* Тірзепатид note — smaller, less gap */
+      .mechanics__note {
+        border-radius: 24px;
+        padding: 16px 20px;
+        font-size: 12px;
+        margin-top: 16px;
+      }
+
+      /* Proof — cards in column */
+      .proof { padding: 60px 20px; }
+      .proof__title { font-size: 32px; }
+      .proof__grid { grid-template-columns: 1fr; }
+      .proof__name { font-size: 16px; }
+      .proof__compare { height: 340px; cursor: pointer; }
+      .proof__content { padding: 20px; }
+      .proof__range { display: none; }
+      .proof__divider { display: none; }
+      .proof__image {
+        transition: opacity 0.45s ease;
+      }
+      .proof__image--after {
+        clip-path: inset(0 0 0 100%);
+        transition: clip-path 0.45s ease, opacity 0.45s ease;
+      }
+      .proof__compare.is-after .proof__image--before {
+        opacity: 0;
+      }
+      .proof__compare.is-after .proof__image--after {
+        clip-path: inset(0);
+      }
+      /* Tap button — centered on photo */
+      .proof__tap-hint {
+        display: flex;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.85);
+        backdrop-filter: blur(8px);
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 32px rgba(26,40,71,0.2);
+        animation: tapPulse 2s ease-in-out infinite;
+        pointer-events: none;
+      }
+      .proof__tap-hint svg {
+        width: 28px;
+        height: 28px;
+        stroke: var(--c-accent, #5C4892);
+        fill: none;
+        stroke-width: 2;
+      }
+      .proof__compare.is-after .proof__tap-hint {
+        animation: none;
+        opacity: 0.5;
+      }
+      @keyframes tapPulse {
+        0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 8px 32px rgba(26,40,71,0.2); }
+        50% { transform: translate(-50%, -50%) scale(1.12); box-shadow: 0 12px 40px rgba(92,72,146,0.35); }
+      }
+      .proof__compare.is-after .proof__label--before {
+        opacity: 0.4;
+      }
+      .proof__compare.is-after .proof__label--after {
+        background: rgba(92, 72, 146, 0.85);
+        color: #FFFFFF;
+      }
+      .proof__compare:not(.is-after) .proof__label--before {
+        background: rgba(92, 72, 146, 0.85);
+        color: #FFFFFF;
+      }
+      .proof__compare:not(.is-after) .proof__label--after {
+        opacity: 0.4;
+      }
+      .proof__label {
+        transition: opacity 0.35s ease, background 0.35s ease, color 0.35s ease;
+      }
+
+      /* Product — card wrapper */
+      .product { padding: 48px 12px; }
+      .product__inner {
+        grid-template-columns: 1fr;
+        gap: 0;
+        background: var(--c-product-bg, #F7F6FA);
+        border-radius: 24px;
+        border: 1px solid rgba(26,40,71,0.08);
+        overflow: hidden;
+      }
+      .product__visual { min-height: 240px; padding: 12px 20px; }
+      .product__photo { max-height: 300px; max-width: 100%; }
+      .product__copy { padding: 24px 20px; gap: 10px; }
+      .product__kicker { margin-bottom: 8px; font-size: 10px; }
+      .product__title { font-size: 22px; }
+      .product__subtitle { font-size: 13px; margin-top: 8px; }
+      .product__includes { display: none; }
+      .product__price { font-size: 28px; margin-top: 12px; }
+      .product__bottom { flex-direction: column; align-items: stretch; gap: 10px; margin-top: 16px; }
+      .product__cta { width: 100%; text-align: center; font-size: 14px; padding: 14px 24px; }
+      .product__wholesale {
+        font-size: 13px;
+        color: var(--c-text, #1A2847);
+        text-align: center;
+        margin-top: 24px;
+        padding: 0 16px 24px;
+      }
+      .product__wholesale a {
+        color: var(--c-accent);
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      /* FAQ */
+      .faq { padding: 60px 20px; }
+      .faq__title { font-size: 32px; margin-bottom: 40px; }
+      .faq__question { font-size: 16px; padding: 24px 0; gap: 16px; }
+      .faq__answer-inner { font-size: 14px; }
+
+      /* Quiz */
+      .cta-quiz { padding: 60px 20px; }
+      .quiz__title { font-size: 28px; }
+      .quiz__step-question { font-size: 22px; }
+      .quiz__option { font-size: 15px; padding: 18px 20px; }
+      .quiz__result-kg { font-size: 36px; }
+      .quiz__result-headline { font-size: 20px; }
+      .quiz__result-text { font-size: 14px; }
+      .quiz__cta { font-size: 15px; padding: 16px 32px; }
+
+      /* Footer — compact */
+      .footer { padding: 28px 16px; }
+      .footer__inner { flex-direction: column; text-align: center; gap: 14px; }
+      .footer__logo { font-size: 14px; letter-spacing: 2px; }
+      .footer__contacts { flex-wrap: wrap; justify-content: center; gap: 10px 16px; font-size: 11px; }
+      .footer__contacts span { display: none; }
+      .footer__copy { font-size: 10px; }
+
+      /* Certificate modal */
+      .cert-modal__close { width: 48px; height: 48px; font-size: 24px; top: 12px; right: 12px; }
+    }
+
+    /* ==========================================================================
+       RESPONSIVE — MOBILE SMALL (max-width: 480px)
+    ========================================================================== */
+    @media (max-width: 480px) {
+      /* Hero — inherit 768bp Figma values; only tweak metric-card sizing */
+      .metric-card { min-width: 115px; padding: 10px 14px; border-radius: 20px; }
+      .metric-card__title { font-size: 10px; }
+      .metric-card__sub { font-size: 7px; }
+
+      /* Trap */
+      .trap__heading { font-size: 28px; }
+
+      /* Transformation — smaller phones */
+      .trans__heading { font-size: 24px; }
+
+      /* Mechanics */
+      .mechanics__title { font-size: 26px; }
+      .mechanics__formats-title { font-size: 15px; }
+
+      /* Proof */
+      .proof__title { font-size: 26px; }
+      .proof__compare { height: 300px; }
+
+      /* Product */
+      .product__visual { min-height: 220px; }
+      .product__photo { max-height: 280px; }
+      .product__title { font-size: 22px; }
+      .product__price { font-size: 28px; }
+      .product__pills { flex-wrap: wrap; }
+
+      /* Quiz */
+      .quiz__title { font-size: 24px; }
+      .quiz__step-question { font-size: 19px; }
+      .quiz__result-kg { font-size: 40px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ============ FIXED TOPBAR (вынесен из .page чтобы не ломался transform: scale) ============ -->
+<header class="topbar">
+  <div class="topbar__inner">
+    <a href="javascript:void(0)" class="nav__logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">Biopatid</a>
+
+    <nav class="nav__menu">
+      <a href="#programa">Програма</a>
+      <a href="#mechanics">Препарат</a>
+      <a href="#results">Результати</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <a href="#product" class="nav__cta">Підібрати програму</a>
+
+    <button class="nav__burger" aria-label="Меню" onclick="document.querySelector('.nav__mobile-menu').classList.toggle('is-open');this.classList.toggle('is-active')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line class="nav__burger-l1" x1="3" y1="6" x2="21" y2="6"/>
+        <line class="nav__burger-l2" x1="3" y1="12" x2="21" y2="12"/>
+        <line class="nav__burger-l3" x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile fullscreen menu -->
+<div class="nav__mobile-menu">
+  <nav class="nav__mobile-links">
+    <a href="#programa" onclick="closeMobileMenu()">Програма</a>
+    <a href="#mechanics" onclick="closeMobileMenu()">Препарат</a>
+    <a href="#results" onclick="closeMobileMenu()">Результати</a>
+    <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
+    <a href="#product" class="nav__mobile-cta" onclick="closeMobileMenu()">Підібрати програму</a>
+  </nav>
+</div>
+
+<div class="page-fit">
+<div class="page">
+
+  <!-- ============ HERO (Frame 5) ============ -->
+  <section class="hero" id="hero">
+
+    <!-- Cloud overlays (background → foreground) -->
+    <img class="hero__cloud hero__cloud--bg"  src="assets/cloud-2.png" alt="Декоративна хмаринка" loading="lazy">
+    <img class="hero__cloud hero__cloud--mid" src="assets/cloud-1.png" alt="Декоративна хмаринка" loading="lazy">
+
+    <!-- Hero image (woman + product) -->
+    <img class="hero__woman" src="assets/hero-woman.png" alt="Жінка з препаратом Biopatid">
+
+    <!-- Hero content -->
+    <div class="hero__content">
+
+      <!-- Badge -->
+      <button class="badge" onclick="document.getElementById('cert-modal').classList.add('is-open')" type="button">
+        <svg class="badge__icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+        <span class="badge__text">Препарат на основі тірзепатиду · Сертифіковано</span>
+      </button>
+
+      <!-- Title -->
+      <h1 class="hero__title">
+        <span class="accent">BIOPATID</span> — зірковий інтелект схуднення, що вимикає думки про їжу
+      </h1>
+
+      <!-- Description -->
+      <p class="hero__desc">
+        Досить обирати одяг, який просто приховує живіт.<br>
+        Поверни собі легкість, яку відчувала роками тому.
+      </p>
+
+      <!-- CTA + Metrics -->
+      <div class="cta-group">
+
+        <a href="#product" class="hero__cta">Підібрати програму</a>
+
+        <div class="metrics">
+          <!-- Ticker wrapper (on mobile, JS clones cards for infinite scroll) -->
+          <div class="metrics-ticker" id="metrics-ticker">
+
+            <!-- Card 1 — trending-up -->
+            <div class="metric-card">
+              <div class="metric-card__head">
+                <svg class="metric-card__icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <polyline points="22 7 13.5 15.5 8.5 10.5 1 18"></polyline>
+                  <polyline points="16 7 22 7 22 13"></polyline>
+                </svg>
+                <h3 class="metric-card__title">Мінус 2–4 кг</h3>
+              </div>
+              <p class="metric-card__sub">*вже в перший місяць</p>
+            </div>
+
+            <!-- Card 2 — zap -->
+            <div class="metric-card">
+              <div class="metric-card__head">
+                <svg class="metric-card__icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+                <h3 class="metric-card__title">Харчова свобода</h3>
+              </div>
+              <p class="metric-card__sub">*апетит зникає на рівні нейронів</p>
+            </div>
+
+            <!-- Card 3 — calendar -->
+            <div class="metric-card">
+              <div class="metric-card__head">
+                <svg class="metric-card__icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8"  y1="2" x2="8"  y2="6"></line>
+                  <line x1="3"  y1="10" x2="21" y2="10"></line>
+                </svg>
+                <h3 class="metric-card__title">1 раз / тиждень</h3>
+              </div>
+              <p class="metric-card__sub">*і ти просто живеш</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ BLOCK 2 — IDENTIFICATION (sticky scroll experience) ============ -->
+  <section class="trap" id="block-trap">
+
+    <!-- Heading (intro, normal flow) -->
+    <div class="trap__intro">
+      <h2 class="trap__heading">
+        Скільки разів ти обіцяла собі,<br>
+        що в цей раз <em>«точно схудну»</em>?
+      </h2>
+    </div>
+
+    <!-- Sticky scroll zone (6 segments × 1080 = 6480 design px) -->
+    <div class="trap__zone">
+      <div class="trap__canvas">
+
+        <!-- Photo backgrounds (5 layers, current is .is-active) -->
+        <div class="trap__photos">
+          <div class="trap__photo trap__photo--1"></div>
+          <div class="trap__photo trap__photo--2"></div>
+          <div class="trap__photo trap__photo--3"></div>
+          <div class="trap__photo trap__photo--4"></div>
+          <div class="trap__photo trap__photo--5"></div>
+          <div class="trap__photo trap__photo--6"></div>
+        </div>
+        <div class="trap__veil">
+          <div class="trap__fade-top is-visible"></div>
+          <div class="trap__fade-bottom"></div>
+        </div>
+
+        <!-- Stage labels (top center) -->
+        <div class="trap__labels">
+          <div class="trap__label" data-stage="1">
+            <div class="trap__label-num">01</div>
+            <div class="trap__label-day">День 1</div>
+          </div>
+          <div class="trap__label" data-stage="2">
+            <div class="trap__label-num">02</div>
+            <div class="trap__label-day">День 3–4</div>
+          </div>
+          <div class="trap__label" data-stage="3">
+            <div class="trap__label-num">03</div>
+            <div class="trap__label-day">День 6–7</div>
+          </div>
+          <div class="trap__label" data-stage="4">
+            <div class="trap__label-num">04</div>
+            <div class="trap__label-day">День 10</div>
+          </div>
+          <div class="trap__label" data-stage="5">
+            <div class="trap__label-num">05</div>
+            <div class="trap__label-day">Через місяць</div>
+          </div>
+        </div>
+
+        <!-- Circle (SVG) + center break button -->
+        <div class="trap__circle">
+          <svg class="trap__svg" viewBox="0 0 720 720" aria-hidden="true">
+            <!-- dotted background ring -->
+            <circle class="trap__ring-bg" cx="360" cy="360" r="320"/>
+            <!-- animated arc (draws clockwise from top) -->
+            <circle class="trap__arc" cx="360" cy="360" r="320"
+                    transform="rotate(-90 360 360)"/>
+            <!-- stage dots -->
+            <circle class="trap__dot" data-stage="1" cx="360" cy="40"  r="6"/>
+            <circle class="trap__dot" data-stage="2" cx="664" cy="261" r="6"/>
+            <circle class="trap__dot" data-stage="3" cx="548" cy="619" r="6"/>
+            <circle class="trap__dot" data-stage="4" cx="172" cy="619" r="6"/>
+            <circle class="trap__dot" data-stage="5" cx="56"  cy="261" r="6"/>
+            <!-- pointer (rotates around center) -->
+            <g class="trap__pointer" transform="rotate(0 360 360)">
+              <circle cx="360" cy="40" r="10"/>
+            </g>
+            <!-- thematic icons (mobile only, appear per stage) -->
+            <!-- Outer <g> = position + scale (SVG attr, not affected by CSS).
+                 Inner <g> = .trap__feather class for opacity + CSS float animation. -->
+
+            <!-- Stage 1: Clipboard — OUTSIDE dot (360,40), above -->
+            <g transform="translate(318, -72) scale(3.5)">
+              <g class="trap__feather trap__feather--float1" data-stage="1">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" fill="none"/>
+                <rect x="8" y="2" width="8" height="4" rx="1" ry="1" fill="none"/>
+                <text class="trap__feather-label" x="12" y="30" text-anchor="middle">Дієти</text>
+              </g>
+            </g>
+            <!-- Stage 2: Calculator — OUTSIDE dot (664,261), right -->
+            <g transform="translate(698, 219) scale(3.5)">
+              <g class="trap__feather trap__feather--float2" data-stage="2">
+                <rect x="4" y="2" width="16" height="20" rx="2" fill="none"/>
+                <line x1="8" y1="6" x2="16" y2="6"/>
+                <line x1="8" y1="10" x2="8.01" y2="10"/><line x1="12" y1="10" x2="12.01" y2="10"/><line x1="16" y1="10" x2="16.01" y2="10"/>
+                <line x1="8" y1="14" x2="8.01" y2="14"/><line x1="12" y1="14" x2="12.01" y2="14"/><line x1="16" y1="14" x2="16.01" y2="14"/>
+                <line x1="8" y1="18" x2="8.01" y2="18"/><line x1="12" y1="18" x2="12.01" y2="18"/><line x1="16" y1="18" x2="16.01" y2="18"/>
+                <text class="trap__feather-label" x="12" y="30" text-anchor="middle">Зриви</text>
+              </g>
+            </g>
+            <!-- Stage 3: Frown — OUTSIDE dot (548,619), below-right -->
+            <g transform="translate(568, 648) scale(3.5)">
+              <g class="trap__feather trap__feather--float3" data-stage="3">
+                <path d="M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0Z" fill="none"/>
+                <path d="M16 16s-1.5-2-4-2-4 2-4 2" fill="none"/>
+                <circle cx="9" cy="9" r="1.2"/><circle cx="15" cy="9" r="1.2"/>
+                <text class="trap__feather-label" x="12" y="30" text-anchor="middle">Розчарування</text>
+              </g>
+            </g>
+            <!-- Stage 4: Coffee — OUTSIDE dot (172,619), below-left -->
+            <g transform="translate(68, 648) scale(3.5)">
+              <g class="trap__feather trap__feather--float4" data-stage="4">
+                <path d="M17 8h1a4 4 0 1 1 0 8h-1" fill="none"/>
+                <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" fill="none"/>
+                <line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/>
+                <text class="trap__feather-label" x="12" y="30" text-anchor="middle">Провина</text>
+              </g>
+            </g>
+            <!-- Stage 5: Repeat/Cycle — OUTSIDE dot (56,261), left -->
+            <g transform="translate(-62, 219) scale(3.5)">
+              <g class="trap__feather trap__feather--float5" data-stage="5">
+                <polyline points="17 1 21 5 17 9" fill="none"/>
+                <path d="M3 11V9a4 4 0 0 1 4-4h14" fill="none"/>
+                <polyline points="7 23 3 19 7 15" fill="none"/>
+                <path d="M21 13v2a4 4 0 0 1-4 4H3" fill="none"/>
+                <text class="trap__feather-label" x="12" y="30" text-anchor="middle">Відчай</text>
+              </g>
+            </g>
+          </svg>
+
+          <!-- Break button (center, hidden until end) -->
+          <button type="button" class="trap__break" id="trap-break">
+            <span class="trap__break-line-1">Розірвати</span>
+            <span class="trap__break-line-2">коло</span>
+          </button>
+        </div>
+
+        <!-- Stage descriptions (below circle) -->
+        <div class="trap__descriptions">
+          <div class="trap__description" data-stage="1">
+            <p class="trap__desc-text">
+              Береш план харчування у відомого блогера та абонемент у зал.
+            </p>
+          </div>
+          <div class="trap__description" data-stage="2">
+            <p class="trap__desc-text">
+              Рахуєш кожну калорію і обмежуєш себе в продуктах та прийомах їжі.
+            </p>
+          </div>
+          <div class="trap__description" data-stage="3">
+            <p class="trap__desc-text">
+              Ти зла, втомлена і постійно голодна, але тримаєш себе в руках.
+            </p>
+          </div>
+          <div class="trap__description" data-stage="4">
+            <p class="trap__desc-text">
+              Одна цукерка перетворюється на нічний бенкет, і почуття провини накриває.
+            </p>
+          </div>
+          <div class="trap__description" data-stage="5">
+            <p class="trap__desc-text">
+              Коло замкнулося — знову картаєш себе, руки опускаються, а вага повертається.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Stats (after sticky zone, centered) -->
+    <footer class="trap__stats">
+      <div class="trap__stat">
+        <span class="trap__stat-num">99<sup>%</sup></span>
+        <span class="trap__stat-label">дієт не працюють</span>
+      </div>
+      <div class="trap__stat">
+        <span class="trap__stat-num">66<sup>%</sup></span>
+        <span class="trap__stat-label">після дієти набирають більше ніж скинули</span>
+      </div>
+      <p class="trap__stats-source">
+        * Джерело: дані постачальника · загальна медична статистика
+      </p>
+    </footer>
+  </section>
+
+  <!-- ============ BLOCK 3 — TRANSFORMATION (sticky split-sidebar) ============ -->
+  <section class="trans" id="programa">
+    <div class="trans__zone">
+      <div class="trans__canvas">
+        <div class="trans__split">
+
+          <!-- LEFT — статичный сайдбар -->
+          <aside class="trans__side">
+            <h2 class="trans__heading">
+              Яким буде твоє життя через <em>90 днів</em>?
+            </h2>
+            <p class="trans__subtitle">
+              Уяви, що їжа стала просто паливом, а не головною подією дня.
+            </p>
+
+            <ul class="trans__menu">
+              <li class="trans__menu-item is-active" data-target="1">
+                <div class="trans__menu-name">Ранок</div>
+                <p class="trans__menu-desc">Прокидаєшся з думкою про день — не про те, що можна з'їсти.</p>
+              </li>
+              <li class="trans__menu-item" data-target="2">
+                <div class="trans__menu-name">День</div>
+                <p class="trans__menu-desc">Їси коли хочеш та стільки, скільки треба. Без підрахунків.</p>
+              </li>
+              <li class="trans__menu-item" data-target="3">
+                <div class="trans__menu-name">Вечір</div>
+                <p class="trans__menu-desc">Нормальна вечеря. Без зриву після та провини перед сном.</p>
+              </li>
+              <li class="trans__menu-item" data-target="4">
+                <div class="trans__menu-name">Ніч</div>
+                <p class="trans__menu-desc">Жага з'їсти солодке вночі — зникає сама, без боротьби.</p>
+              </li>
+              <li class="trans__menu-item" data-target="5">
+                <div class="trans__menu-name">Через 3 місяці</div>
+                <p class="trans__menu-desc">Одяг сидить інакше. Не тому, що забороняла собі — а тому, що тіло змінилось.</p>
+              </li>
+            </ul>
+
+            <a href="#product" class="trans__cta">
+              Хочу так само
+              <svg class="trans__cta-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                <line x1="4" y1="12" x2="20" y2="12"></line>
+                <polyline points="14 6 20 12 14 18"></polyline>
+              </svg>
+            </a>
+          </aside>
+
+          <!-- RIGHT — сцена (меняется per state) -->
+          <div class="trans__stage" data-state="1">
+            <div class="trans__state is-active" data-state="1">
+              <div class="trans__state-num">01</div>
+              <h3 class="trans__state-title">Ранок</h3>
+              <p class="trans__state-desc">Прокидаєшся з думкою про день — не про те, що можна з'їсти.</p>
+            </div>
+            <div class="trans__state" data-state="2">
+              <div class="trans__state-num">02</div>
+              <h3 class="trans__state-title">День</h3>
+              <p class="trans__state-desc">Їси коли хочеш та стільки, скільки треба. Без підрахунків.</p>
+            </div>
+            <div class="trans__state" data-state="3">
+              <div class="trans__state-num">03</div>
+              <h3 class="trans__state-title">Вечір</h3>
+              <p class="trans__state-desc">Нормальна вечеря. Без зриву після та провини перед сном.</p>
+            </div>
+            <div class="trans__state" data-state="4">
+              <div class="trans__state-num">04</div>
+              <h3 class="trans__state-title">Ніч</h3>
+              <p class="trans__state-desc">Жага з'їсти солодке вночі — зникає сама, без боротьби.</p>
+            </div>
+            <div class="trans__state" data-state="5">
+              <div class="trans__state-num">05</div>
+              <h3 class="trans__state-title">Через 3 місяці</h3>
+              <p class="trans__state-desc">Одяг сидить інакше. Не тому, що забороняла собі — а тому, що тіло змінилось.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile carousel (hidden on desktop, shown on <=768px) -->
+    <div class="trans__carousel">
+      <h2 class="trans__carousel-heading">Яким буде твоє життя через <em>90 днів</em>?</h2>
+      <div class="trans__carousel-track">
+        <div class="trans__carousel-card" style="background-image:url('assets/pic-1.jpeg')">
+          <p class="trans__carousel-label">Ранок</p>
+          <p class="trans__carousel-text">Прокидаєшся з думкою про день — не про те що можна з'їсти</p>
+        </div>
+        <div class="trans__carousel-card" style="background-image:url('assets/pic-2.jpeg')">
+          <p class="trans__carousel-label">День</p>
+          <p class="trans__carousel-text">Їси коли хочеш та стільки скільки треба. Без підрахунків.</p>
+        </div>
+        <div class="trans__carousel-card" style="background-image:url('assets/pic-3.jpeg')">
+          <p class="trans__carousel-label">Вечір</p>
+          <p class="trans__carousel-text">Нормальна вечеря. Без зриву після та провини перед сном.</p>
+        </div>
+        <div class="trans__carousel-card" style="background-image:url('assets/pic-4.jpeg')">
+          <p class="trans__carousel-label">Ніч</p>
+          <p class="trans__carousel-text">Жага з'їсти солодке вночі — зникає сама, без боротьби.</p>
+        </div>
+        <div class="trans__carousel-card" style="background-image:url('assets/pic-5.jpeg')">
+          <p class="trans__carousel-label">Через три місяці</p>
+          <p class="trans__carousel-text">Одяг сидить інакше. Не тому що забороняла собі — а тому що тіло змінилось.</p>
+        </div>
+      </div>
+      <div class="trans__carousel-dots">
+        <span class="trans__carousel-dot is-active"></span>
+        <span class="trans__carousel-dot"></span>
+        <span class="trans__carousel-dot"></span>
+        <span class="trans__carousel-dot"></span>
+        <span class="trans__carousel-dot"></span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ BLOCK 4 — MECHANICS ============ -->
+  <section class="mechanics" id="mechanics">
+    <div class="mechanics__inner">
+      <h2 class="mechanics__title">
+        Як Biopatid робить те, що не під силу <em>дієтам</em>?
+      </h2>
+      <p class="mechanics__subtitle">
+        Одна процедура на тиждень — і твоє тіло починає працювати інакше.
+      </p>
+
+      <div class="mechanics__grid">
+        <article class="mechanics__panel mechanics__panel--medical">
+          <div>
+            <p class="mechanics__eyebrow">Принцип дії</p>
+            <p class="mechanics__lead">
+              В основі — тірзепатид. Він активує два природні гормони ситості одночасно.
+            </p>
+            <p class="mechanics__body">
+              GIP і GLP-1 разом дають подвійний ефект: апетит знижується, а метаболізм прискорюється.
+            </p>
+          </div>
+
+          <div class="mechanics__receptors">
+            <div class="mechanics__receptor">
+              <span class="mechanics__receptor-code">GIP</span>
+              <span class="mechanics__receptor-label">сигнал ситості та метаболічна відповідь</span>
+            </div>
+            <div class="mechanics__receptor">
+              <span class="mechanics__receptor-code">GLP-1</span>
+              <span class="mechanics__receptor-label">менше апетиту, менше думок про їжу</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="mechanics__panel mechanics__chart">
+          <div class="mechanics__chart-head">
+            <h3 class="mechanics__chart-title">Графік зниження апетиту</h3>
+            <div class="mechanics__chart-value">−</div>
+          </div>
+          <svg class="mechanics__graph" viewBox="0 0 760 256" aria-hidden="true">
+            <line class="mechanics__graph-grid" x1="0" y1="48" x2="760" y2="48"></line>
+            <line class="mechanics__graph-grid" x1="0" y1="128" x2="760" y2="128"></line>
+            <line class="mechanics__graph-grid" x1="0" y1="208" x2="760" y2="208"></line>
+            <path class="mechanics__graph-base" d="M16 54 C 132 58, 184 80, 254 104 S 398 162, 492 178 S 628 190, 744 204"></path>
+            <path class="mechanics__graph-line" d="M16 54 C 132 58, 184 80, 254 104 S 398 162, 492 178 S 628 190, 744 204"></path>
+          </svg>
+          <div class="mechanics__axis">
+            <span>Тиждень 1</span>
+            <span>Місяць 1</span>
+            <span>Місяць 3</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="mechanics__formats">
+        <div class="mechanics__formats-copy">
+          <p class="mechanics__eyebrow">Формат застосування</p>
+          <h3 class="mechanics__formats-title">
+            Доступний у двох форматах — підбирається індивідуально під спосіб життя.
+          </h3>
+          <p class="mechanics__formats-text">
+            Без зайвих деталей на першому екрані: конкретний формат і дозування підбираються після короткого чекапу.
+          </p>
+          <!-- Mobile-only: inline list instead of separate cards -->
+          <ul class="mechanics__format-list">
+            <li><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Домашній ритм</li>
+            <li><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg> Супровід спеціаліста</li>
+          </ul>
+        </div>
+        <div class="mechanics__format-cards">
+          <div class="mechanics__format-card">
+            <span class="mechanics__format-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></span>
+            <p class="mechanics__format-name">Формат для домашнього ритму</p>
+          </div>
+          <div class="mechanics__format-card">
+            <span class="mechanics__format-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg></span>
+            <p class="mechanics__format-name">Формат для супроводу спеціаліста</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mechanics__path">
+        <div class="mechanics__path-line"></div>
+        <div class="mechanics__steps">
+          <article class="mechanics__step">
+            <span class="mechanics__dot"></span>
+            <div class="mechanics__step-card">
+              <span class="mechanics__step-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </span>
+              <span class="mechanics__step-period">Тиждень 1–2</span>
+              <h3 class="mechanics__step-title">Сигнал ситості</h3>
+              <p class="mechanics__step-text">Тіло отримує новий сигнал. Думок про їжу стає менше.</p>
+            </div>
+          </article>
+          <!-- Dashed arc 1→2 (mobile only) -->
+          <svg class="mechanics__step-arc" viewBox="0 0 40 48" aria-hidden="true">
+            <path d="M20 0 Q 36 24, 20 48"/>
+          </svg>
+          <article class="mechanics__step">
+            <span class="mechanics__dot"></span>
+            <div class="mechanics__step-card">
+              <span class="mechanics__step-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+              </span>
+              <span class="mechanics__step-period">Місяць 1</span>
+              <h3 class="mechanics__step-title">Порції зменшуються</h3>
+              <p class="mechanics__step-text">Перший результат — мінус 2–4 кг без постійного контролю.</p>
+            </div>
+          </article>
+          <!-- Dashed arc 2→3 (mobile only) -->
+          <svg class="mechanics__step-arc" viewBox="0 0 40 48" aria-hidden="true">
+            <path d="M20 0 Q 4 24, 20 48"/>
+          </svg>
+          <article class="mechanics__step">
+            <span class="mechanics__dot"></span>
+            <div class="mechanics__step-card">
+              <span class="mechanics__step-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </span>
+              <span class="mechanics__step-period">Місяць 2–3</span>
+              <h3 class="mechanics__step-title">Вага йде стабільно</h3>
+              <p class="mechanics__step-text">Без обмежень та боротьби. Тіло працює в іншому режимі.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <p class="mechanics__note">
+        <strong>Тірзепатид діє на два рецептори одночасно</strong> — на відміну від більшості аналогів. Це забезпечує швидший і стійкіший результат.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ BLOCK 5 — SOCIAL PROOF ============ -->
+  <section class="proof" id="results">
+    <div class="proof__inner">
+      <header class="proof__head">
+        <div>
+          <h2 class="proof__title">Реальні результати. <em>Реальні люди.</em></h2>
+        </div>
+      </header>
+
+      <div class="proof__grid">
+        <article class="proof__card">
+          <div class="proof__compare" style="--split: 50">
+            <img class="proof__image proof__image--before" src="assets/Wmn1_before.png" alt="Олена до прийому Biopatid" loading="lazy">
+            <img class="proof__image proof__image--after" src="assets/Wmn1_after.png" alt="Олена після прийому Biopatid — мінус 11 кг" loading="lazy">
+            <span class="proof__label proof__label--before">До</span>
+            <span class="proof__label proof__label--after">Після</span>
+            <span class="proof__divider"></span>
+            <input class="proof__range" type="range" min="0" max="100" value="50" aria-label="Порівняти фото Олени">
+            <div class="proof__tap-hint"><svg viewBox="0 0 24 24"><path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="proof__content">
+            <h3 class="proof__name">Олена, 38 років · −11 кг за 3 місяці</h3>
+            <p class="proof__quote">«Я нарешті перестала думати про їжу 24/7. Знову відчуваю себе жінкою.»</p>
+          </div>
+        </article>
+
+        <article class="proof__card">
+          <div class="proof__compare" style="--split: 50">
+            <img class="proof__image proof__image--before" src="assets/Wmn2_before.png" alt="Марина до прийому Biopatid" loading="lazy">
+            <img class="proof__image proof__image--after" src="assets/Wmn2_after.png" alt="Марина після прийому Biopatid — мінус 8 кг" loading="lazy">
+            <span class="proof__label proof__label--before">До</span>
+            <span class="proof__label proof__label--after">Після</span>
+            <span class="proof__divider"></span>
+            <input class="proof__range" type="range" min="0" max="100" value="50" aria-label="Порівняти фото Марини">
+            <div class="proof__tap-hint"><svg viewBox="0 0 24 24"><path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="proof__content">
+            <h3 class="proof__name">Марина, 44 роки · −8 кг за 2 місяці</h3>
+            <p class="proof__quote">«Я очікувала побічки — не було жодної. Тільки результат.»</p>
+          </div>
+        </article>
+
+        <article class="proof__card">
+          <div class="proof__compare" style="--split: 50">
+            <img class="proof__image proof__image--before" src="assets/Wmn3_before.png" alt="Ірина до прийому Biopatid" loading="lazy">
+            <img class="proof__image proof__image--after" src="assets/Wmn3_after.png" alt="Ірина після прийому Biopatid — мінус 14 кг" loading="lazy">
+            <span class="proof__label proof__label--before">До</span>
+            <span class="proof__label proof__label--after">Після</span>
+            <span class="proof__divider"></span>
+            <input class="proof__range" type="range" min="0" max="100" value="50" aria-label="Порівняти фото Ірини">
+            <div class="proof__tap-hint"><svg viewBox="0 0 24 24"><path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="proof__content">
+            <h3 class="proof__name">Ірина, 34 роки · −14 кг за 4 місяці</h3>
+            <p class="proof__quote">«Після 40 я вже не вірила що це можливо. Виявляється — можливо.»</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BLOCK 6 — PRODUCT ============ -->
+  <section class="product" id="product">
+    <div class="product__inner">
+      <div class="product__visual">
+        <button class="product__arrow product__arrow--left" onclick="productSlider(-1)" aria-label="Попередній товар">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <div class="product__slide-area">
+          <img class="product__photo product__photo--active" data-product="0" src="assets/Biopatid.png" alt="Biopatid 60 mg" loading="lazy">
+          <img class="product__photo" data-product="0" data-dose="1" src="assets/Biopatid2.png" alt="Biopatid 40 mg" loading="lazy">
+          <img class="product__photo" data-product="1" src="assets/BiopatidKit.png" alt="Biopatid Kit 6 шт" loading="lazy">
+          <img class="product__photo" data-product="1" data-dose="1" src="assets/BiopatidKit2.png" alt="Biopatid Kit 1 шт" loading="lazy">
+        </div>
+        <button class="product__arrow product__arrow--right" onclick="productSlider(1)" aria-label="Наступний товар">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <div class="product__dots">
+          <span class="product__dot product__dot--active" onclick="setProduct(0)"></span>
+          <span class="product__dot" onclick="setProduct(1)"></span>
+        </div>
+      </div>
+
+      <div class="product__copy">
+        <h2 class="product__title">Твій повний курс трансформації <span class="product__title-accent" id="product-title-name">Biopatid</span></h2>
+        <p class="product__subtitle">«Ми не продаємо дози. Ми продаємо результат під ключ.»</p>
+
+        <p class="product__includes">Препарат на 3 місяці · Підбір дози · Підтримка</p>
+
+        <div class="product__name-row">
+          <span class="product__product-name" id="product-name">Biopatid</span>
+          <span class="product__product-dose" id="product-dose-label">60 мг</span>
+        </div>
+
+        <div class="product__pills" id="product-pills">
+          <button class="product__pill product__pill--active" onclick="setDose(0)">
+            <span class="product__pill-dose" data-product="0">40 мг</span>
+            <span class="product__pill-dose" data-product="1" style="display:none">1 шт · 8 300 ₴</span>
+          </button>
+          <button class="product__pill" onclick="setDose(1)">
+            <span class="product__pill-dose" data-product="0">60 мг</span>
+            <span class="product__pill-dose" data-product="1" style="display:none">6 шт · 49 800 ₴</span>
+          </button>
+        </div>
+
+        <div class="product__bottom">
+          <div>
+            <span class="product__price-label">Ціна</span>
+            <span class="product__price" id="product-price">31 200 ₴</span>
+          </div>
+          <a href="#quiz" class="product__cta">Придбати курс</a>
+        </div>
+      </div>
+
+      <p class="product__wholesale">
+        Ви косметолог або власник клініки? <a href="#product">Оптові умови тут</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ BLOCK 7 — FAQ ============ -->
+  <section class="faq" id="faq">
+    <div class="faq__inner">
+      <h2 class="faq__title">Часті питання</h2>
+
+      <div class="faq__list">
+
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false">
+            <span>Що таке Biopatid?</span>
+            <span class="faq__icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq__answer">
+            <div class="faq__answer-inner">Biopatid — препарат на основі тірзепатиду для зниження ваги та покращення метаболізму. Він одночасно активує два гормони ситості — GIP і GLP-1. Це забезпечує подвійний ефект: апетит знижується, метаболізм прискорюється, вага стабільно йде вниз.</div>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false">
+            <span>Чим Biopatid відрізняється від аналогів?</span>
+            <span class="faq__icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq__answer">
+            <div class="faq__answer-inner">Більшість аналогів діють лише на один рецептор — GLP-1. Тірзепатид активує одразу два: GIP і GLP-1. Це дає швидший і стійкіший результат. Крім того, Biopatid доступний у двох форматах застосування — підбирається індивідуально.</div>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false">
+            <span>Чи є побічні ефекти?</span>
+            <span class="faq__icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq__answer">
+            <div class="faq__answer-inner">У частини людей в перші 1–2 тижні може бути легка нудота — організм звикає до нового сигналу ситості. Це минає самостійно. Серйозні реакції — рідкість. Саме тому перед покупкою ми просимо пройти короткий чекап на протипоказання.</div>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false">
+            <span>Скільки часу до першого результату?</span>
+            <span class="faq__icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq__answer">
+            <div class="faq__answer-inner">Перші −2–4 кг більшість бачать вже в перший місяць. Помітний і стабільний результат — від другого місяця. У середньому за 3 місяці курсу — мінус 0,5–1 кг на тиждень.</div>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false">
+            <span>Чи треба обмежувати себе в їжі?</span>
+            <span class="faq__icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq__answer">
+            <div class="faq__answer-inner">Ні. Сенс препарату саме в тому, що апетит регулюється природно. Ти їси менше не тому що забороняєш собі — а тому що просто не хочеш більше. Ніяких дієт і підрахунку калорій.</div>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false">
+            <span>Що відбувається після курсу?</span>
+            <span class="faq__icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq__answer">
+            <div class="faq__answer-inner">Результат зберігається, якщо не повертатись до старих звичок. Більшість підтримують вагу без повторного курсу. За потреби — є підтримуюча доза.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BLOCK 8 — QUIZ ============ -->
+  <section class="cta-quiz" id="cta">
+    <div class="quiz" id="quiz">
+      <div class="quiz__header">
+        <h2 class="quiz__title">Підберемо курс під тебе — за 2 хвилини.</h2>
+        <p class="quiz__desc">Відповідай чесно — результат буде точнішим.</p>
+      </div>
+
+      <div class="quiz__progress" id="progress">
+        <div class="quiz__progress-dot"></div>
+        <div class="quiz__progress-dot"></div>
+        <div class="quiz__progress-dot"></div>
+        <div class="quiz__progress-dot"></div>
+        <div class="quiz__progress-dot"></div>
+      </div>
+
+      <div class="quiz__step is-active" data-step="1">
+        <p class="quiz__step-num">Крок 1 / 4</p>
+        <h2 class="quiz__step-question">Чого ти хочеш?</h2>
+        <div class="quiz__options">
+          <button class="quiz__option" data-value="A"><span class="dot"></span>Скинути до 10 кг</button>
+          <button class="quiz__option" data-value="B"><span class="dot"></span>Скинути 10–20 кг</button>
+          <button class="quiz__option" data-value="C"><span class="dot"></span>Скинути 20+ кг</button>
+          <button class="quiz__option" data-value="D"><span class="dot"></span>Підтримати результат який вже є</button>
+        </div>
+      </div>
+
+      <div class="quiz__step" data-step="2">
+        <button class="quiz__back" id="back2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Назад</button>
+        <p class="quiz__step-num">Крок 2 / 4</p>
+        <h2 class="quiz__step-question">Ти вже пробувала схуднути раніше?</h2>
+        <div class="quiz__options">
+          <button class="quiz__option" data-value="1"><span class="dot"></span>Так, багато разів — нічого не тримається</button>
+          <button class="quiz__option" data-value="2"><span class="dot"></span>Були спроби — частково вийшло</button>
+          <button class="quiz__option" data-value="3"><span class="dot"></span>Вперше підходжу серйозно</button>
+        </div>
+      </div>
+
+      <div class="quiz__step" data-step="3">
+        <button class="quiz__back" id="back3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Назад</button>
+        <p class="quiz__step-num">Крок 3 / 4</p>
+        <h2 class="quiz__step-question">Що заважає найбільше?</h2>
+        <div class="quiz__options">
+          <button class="quiz__option" data-value="a"><span class="dot"></span>Зриваюся і повертаю вагу</button>
+          <button class="quiz__option" data-value="b"><span class="dot"></span>Постійно думаю про їжу</button>
+          <button class="quiz__option" data-value="c"><span class="dot"></span>Немає результату попри зусилля</button>
+          <button class="quiz__option" data-value="d"><span class="dot"></span>Немає часу і сил на це</button>
+        </div>
+      </div>
+
+      <div class="quiz__step" data-step="4">
+        <button class="quiz__back" id="back4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Назад</button>
+        <p class="quiz__step-num">Крок 4 / 4</p>
+        <h2 class="quiz__step-question">Щоб підібрати курс безпечно — відміть якщо щось із цього є:</h2>
+        <div class="quiz__checks" id="checks">
+          <button class="quiz__check" data-contra="1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#dc3232" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Вагітність або годування грудьми</button>
+          <button class="quiz__check" data-contra="2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#dc3232" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Діабет 1 типу</button>
+          <button class="quiz__check" data-contra="3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#dc3232" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Захворювання підшлункової залози</button>
+          <button class="quiz__check" data-contra="4"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#dc3232" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Прийом інсуліну або цукрознижуючих препаратів</button>
+        </div>
+        <button class="quiz__safe-btn" id="safe-btn">Нічого з перерахованого</button>
+      </div>
+
+      <div class="quiz__step" data-step="5">
+        <div class="quiz__result" id="result"></div>
+      </div>
+
+      <p class="quiz__wholesale">Ви косметолог або власник клініки? <a href="#product">Оптові умови тут</a></p>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <span class="footer__logo">Biopatid</span>
+      <div class="footer__contacts">
+        <a href="javascript:void(0)" onclick="document.getElementById('cert-modal').classList.add('is-open')">Сертифікат</a>
+        <span>·</span>
+        <a href="tel:+380739111755">+38 073 911 17 55</a>
+        <a href="https://t.me/" target="_blank" rel="noopener noreferrer">Telegram</a>
+        <span>·</span>
+        <a href="viber://chat" target="_blank" rel="noopener noreferrer">Viber</a>
+      </div>
+      <span class="footer__copy">© 2026 Biopatid. Всі права захищені.</span>
+    </div>
+  </footer>
+
+  <!-- Certificate Modal -->
+  <div class="cert-modal" id="cert-modal" onclick="if(event.target===this)this.classList.remove('is-open')">
+    <div class="cert-modal__card">
+      <button class="cert-modal__close" onclick="document.getElementById('cert-modal').classList.remove('is-open')" aria-label="Закрити">&times;</button>
+      <iframe class="cert-modal__iframe" src="assets/Сертифікат_Біопатид.pdf"></iframe>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+  // ====== Auto-fit 1920-wide layout via CSS zoom ======
+  // Принципиально zoom (а не transform: scale) — он меняет реальные layout
+  // dimensions, поэтому native position: sticky работает без JS-костылей.
+  (function () {
+    const TARGET_W = 1920;
+    const NAV_H    = 56;
+    const page     = document.querySelector('.page');
+    const topbar   = document.querySelector('.topbar');
+    const navInner = document.querySelector('.topbar__inner');
+
+    const wrapper = document.querySelector('.page-fit');
+    function fit() {
+      const vw = document.documentElement.clientWidth;
+
+      // On screens <= 1024px, disable zoom and let responsive CSS handle layout
+      if (vw <= 1024) {
+        page.style.zoom = '';
+        page.style.transform = 'none';
+        navInner.style.zoom = '';
+        navInner.style.transform = 'none';
+        topbar.style.height = '';
+        document.documentElement.style.setProperty('--page-scale', 1);
+        wrapper.style.height = '';
+        return;
+      }
+
+      const rawScale = Math.min(vw / TARGET_W, 1);
+      // Snap-to-1 если viewport почти 1920 — избегаем transform для sticky
+      const scale = rawScale >= 0.995 ? 1 : rawScale;
+
+      document.documentElement.style.setProperty('--page-scale', scale);
+      page.style.transform     = 'none';
+      navInner.style.transform = 'none';
+      page.style.zoom          = scale;
+      navInner.style.zoom      = scale;
+      topbar.style.height      = (NAV_H * scale) + 'px';
+      wrapper.style.height     = page.getBoundingClientRect().height + 'px';
+    }
+    window.addEventListener('resize', fit);
+    window.addEventListener('load',   fit);
+    fit();
+    setTimeout(fit, 100);
+    setTimeout(fit, 500);
+    if (window.location.hash) {
+      const hashTarget = document.querySelector(window.location.hash);
+      if (hashTarget) {
+        setTimeout(() => hashTarget.scrollIntoView({ block: 'start' }), 650);
+      }
+    }
+
+    // ====== Glass effect on scroll ======
+    function onScroll() {
+      if (window.scrollY > 20) {
+        topbar.classList.add('topbar--scrolled');
+      } else {
+        topbar.classList.remove('topbar--scrolled');
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+  // ====== Smooth scroll для якорных ссылок ======
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      const id = link.getAttribute('href').slice(1);
+      if (!id) return;
+      const target = document.getElementById(id);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ====== Block 2 — TRAP sticky scroll experience ======
+  function createPinController(zone, canvas) {
+    const TARGET_W = 1920;
+    let layer = document.querySelector('.pin-layer');
+    if (!layer) {
+      layer = document.createElement('div');
+      layer.className = 'pin-layer';
+      document.body.appendChild(layer);
+    }
+
+    let mode = '';
+    let lastScale = 0;
+    let lastViewportH = 0;
+
+    function resetCanvas() {
+      if (canvas.parentNode !== zone) zone.appendChild(canvas);
+      canvas.style.position = 'absolute';
+      canvas.style.left = '0';
+      canvas.style.right = '0';
+      canvas.style.width = '';
+      canvas.style.height = '';
+      canvas.style.transform = '';
+      canvas.style.transformOrigin = '';
+    }
+
+    function setMode(nextMode, scale) {
+      if (nextMode === mode && scale === lastScale && window.innerHeight === lastViewportH) return;
+      mode = nextMode;
+      lastScale = scale;
+      lastViewportH = window.innerHeight;
+
+      const layoutH = window.innerHeight / scale;
+      if (nextMode === 'active') {
+        if (canvas.parentNode !== layer) layer.appendChild(canvas);
+        canvas.style.position = 'fixed';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        canvas.style.right = 'auto';
+        canvas.style.width = scale === 1 ? '100%' : TARGET_W + 'px';
+        canvas.style.height = layoutH + 'px';
+        canvas.style.transform = scale === 1 ? '' : 'scale(' + scale + ')';
+        canvas.style.transformOrigin = 'top left';
+        return;
+      }
+
+      resetCanvas();
+      canvas.style.top = nextMode === 'post'
+        ? Math.max(0, zone.offsetHeight - layoutH) + 'px'
+        : '0';
+    }
+
+    return function updatePin(rect, scale) {
+      if (rect.top >= 0) {
+        setMode('pre', scale);
+      } else if (rect.bottom <= window.innerHeight) {
+        setMode('post', scale);
+      } else {
+        setMode('active', scale);
+      }
+    };
+  }
+
+  // 6 segments: stages 1..5 cover progress 0..0.833 (5/6),
+  // last 1/6 holds the "Розірвати коло" button visible.
+  (function () {
+    const trap = document.querySelector('.trap');
+    if (!trap) return;
+    const zone     = trap.querySelector('.trap__zone');
+    const arc      = trap.querySelector('.trap__arc');
+    const pointer  = trap.querySelector('.trap__pointer');
+    const labels   = trap.querySelectorAll('.trap__label');
+    const descs    = trap.querySelectorAll('.trap__description');
+    const photos   = trap.querySelectorAll('.trap__photo');
+    const dots     = trap.querySelectorAll('.trap__dot');
+    const breakBtn = trap.querySelector('.trap__break');
+
+    const canvas   = trap.querySelector('.trap__canvas');
+    const fadeTop  = trap.querySelector('.trap__fade-top');
+    const fadeBot  = trap.querySelector('.trap__fade-bottom');
+    const DARK_STAGES = [3, 4, 5];
+
+    const RADIUS = 320;
+    const C = 2 * Math.PI * RADIUS;
+    arc.style.strokeDasharray  = C;
+    arc.style.strokeDashoffset = C;
+
+    const STAGES_END = 5 / 6; // 0.8333 — после этого появляется кнопка
+
+    const feathers = trap.querySelectorAll('.trap__feather');
+
+    function setStage(n, showBtn) {
+      labels.forEach((el, i) => el.classList.toggle('is-active', !showBtn && i + 1 === n));
+      descs.forEach((el, i) => el.classList.toggle('is-active', !showBtn && i + 1 === n));
+      // photos: 1-5 match stages, photo 6 shows with CTA button
+      var activePhoto = showBtn ? 6 : n;
+      photos.forEach((el, i) => el.classList.toggle('is-active', i + 1 === activePhoto));
+      dots.forEach((el, i) => el.classList.toggle('is-on', i + 1 <= n));
+      breakBtn.classList.toggle('is-visible', showBtn);
+
+      // Dark mode for stages with dark photos
+      canvas.classList.toggle('is-dark', DARK_STAGES.includes(n) && !showBtn);
+
+      // Fades: top only on stage 1, bottom only on CTA
+      fadeTop.classList.toggle('is-visible', n === 1 && !showBtn);
+      fadeBot.classList.toggle('is-visible', showBtn);
+
+      // Feather icons — mobile only
+      if (window.innerWidth <= 1024) {
+        feathers.forEach(function(f) {
+          var stage = parseInt(f.getAttribute('data-stage'), 10);
+          if (showBtn) {
+            f.classList.remove('is-visible');
+          } else {
+            f.classList.toggle('is-visible', stage <= n);
+          }
+        });
+      }
+    }
+
+    const updatePin = createPinController(zone, canvas);
+
+    let pageScale = 1;
+    function readScale() { pageScale = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--page-scale')) || 1; }
+    readScale();
+
+    function update() {
+      const rect = zone.getBoundingClientRect();
+      updatePin(rect, pageScale);
+      const canvasH = canvas.getBoundingClientRect().height;
+
+      const total = rect.height - canvasH;
+      const scrolled = Math.max(0, -rect.top);
+      let progress = total > 0 ? scrolled / total : 0;
+      progress = Math.max(0, Math.min(1, progress));
+
+      // Дуга и pointer — заполняются за время первых 5/6 прогресса
+      const arcP = Math.min(1, progress / STAGES_END);
+      arc.style.strokeDashoffset = C * (1 - arcP);
+      if (pointer) {
+        pointer.setAttribute('transform', 'rotate(' + (360 * arcP) + ' 360 360)');
+      }
+
+      // Активный этап: 1..5 в первых 5/6, дальше — кнопка
+      let stage, showBtn;
+      if (progress < STAGES_END) {
+        stage = Math.min(Math.floor((progress / STAGES_END) * 5) + 1, 5);
+        showBtn = false;
+      } else {
+        stage = 5;
+        showBtn = true;
+      }
+      setStage(stage, showBtn);
+    }
+
+    // Изначально показываем первый этап (если зона ещё не доскроллена)
+    setStage(1, false);
+
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', () => { readScale(); update(); });
+    update();
+
+    // Клик по кнопке — скролл к следующей секции
+    breakBtn.addEventListener('click', () => {
+      const target = document.getElementById('product');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: trap.offsetTop + trap.offsetHeight, behavior: 'smooth' });
+      }
+    });
+  })();
+
+  // ====== Block 3 — TRANS sticky split-sidebar ======
+  // По вертикальному скроллу прогресс зоны делится на 5 равных интервалов,
+  // активное состояние подсвечивается в меню (LEFT) и на сцене (RIGHT).
+  // Клик по пункту меню — плавный скролл к соответствующему интервалу.
+  (function () {
+    const trans = document.querySelector('.trans');
+    if (!trans) return;
+    const zone   = trans.querySelector('.trans__zone');
+    const canvas = trans.querySelector('.trans__canvas');
+    const stage  = trans.querySelector('.trans__stage');
+    const states = trans.querySelectorAll('.trans__state');
+    const items  = trans.querySelectorAll('.trans__menu-item');
+    if (!zone || !canvas || !stage || states.length === 0) return;
+    const updatePin = createPinController(zone, canvas);
+
+    const TOTAL = 5;
+    let currentIdx = 1, pageScale = 1;
+    function readScale() { pageScale = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--page-scale')) || 1; }
+    readScale();
+
+    function setActive(idx) {
+      if (idx === currentIdx) return;
+      currentIdx = idx;
+      stage.dataset.state = idx;
+      states.forEach((el, i) => el.classList.toggle('is-active', i + 1 === idx));
+      items.forEach((el, i)  => el.classList.toggle('is-active', i + 1 === idx));
+    }
+
+    function update() {
+      const rect = zone.getBoundingClientRect();
+      updatePin(rect, pageScale);
+      const canvasH = canvas.getBoundingClientRect().height;
+
+      const total = rect.height - canvasH;
+      const scrolled = Math.max(0, -rect.top);
+      let p = total > 0 ? scrolled / total : 0;
+      p = Math.max(0, Math.min(0.9999, p));
+      const idx = Math.min(TOTAL, Math.floor(p * TOTAL) + 1);
+      setActive(idx);
+    }
+
+    // Клик по пункту меню — скролл к середине соответствующего интервала
+    items.forEach((item, i) => {
+      item.addEventListener('click', () => {
+        const rect = zone.getBoundingClientRect();
+        const canvasH = canvas.getBoundingClientRect().height;
+        const total = rect.height - canvasH;
+        const targetP = (i + 0.5) / TOTAL;
+        const targetTop = window.scrollY + rect.top + targetP * total;
+        window.scrollTo({ top: targetTop, behavior: 'smooth' });
+      });
+    });
+
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', () => { readScale(); update(); });
+    update();
+  })();
+
+  // ====== Block 4 — MECHANICS scroll progress ======
+  (function () {
+    const mechanics = document.querySelector('.mechanics');
+    if (!mechanics) return;
+    const chartEl = mechanics.querySelector('.mechanics__chart');
+    const pathEl = mechanics.querySelector('.mechanics__path');
+    const steps = mechanics.querySelectorAll('.mechanics__step');
+
+    function update() {
+      const viewportH = window.innerHeight || 1;
+
+      // --- Graph progress: completes faster (within chart area) ---
+      const chartRect = (chartEl || mechanics).getBoundingClientRect();
+      const graphStart = window.scrollY + chartRect.top - viewportH * 0.8;
+      const graphEnd = window.scrollY + chartRect.bottom - viewportH * 0.3;
+      const graphRange = Math.max(1, graphEnd - graphStart);
+      const graphProgress = Math.max(0, Math.min(1, (window.scrollY - graphStart) / graphRange));
+      mechanics.style.setProperty('--mechanics-progress', graphProgress.toFixed(3));
+
+      // --- Steps: animate only when path section is visible on screen ---
+      const pathRect = (pathEl || mechanics).getBoundingClientRect();
+      const stepsStart = window.scrollY + pathRect.top - viewportH * 0.75;
+      const stepsEnd = window.scrollY + pathRect.top - viewportH * 0.15;
+      const stepsRange = Math.max(1, stepsEnd - stepsStart);
+      const stepsProgress = Math.max(0, Math.min(1, (window.scrollY - stepsStart) / stepsRange));
+
+      // Set path-line fill based on steps progress
+      mechanics.style.setProperty('--steps-progress', stepsProgress.toFixed(3));
+
+      steps.forEach((step, i) => {
+        const threshold = (i + 0.3) / steps.length;
+        step.classList.toggle('is-active', stepsProgress >= threshold);
+      });
+    }
+
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+
+  // ====== Block 5 — SOCIAL PROOF compare sliders ======
+  (function () {
+    const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+
+    document.querySelectorAll('.proof__compare').forEach(compare => {
+      const range = compare.querySelector('.proof__range');
+      if (!range) return;
+
+      // Desktop: slider
+      function update() {
+        compare.style.setProperty('--split', range.value);
+      }
+      range.addEventListener('input', update);
+      update();
+
+      // Mobile: tap-to-toggle
+      compare.addEventListener('click', function (e) {
+        if (!isMobile()) return;
+        if (e.target === range) return;
+        compare.classList.toggle('is-after');
+      });
+    });
+  })();
+
+  // ====== Block 7 — FAQ accordion ======
+  (function () {
+    document.querySelectorAll('.faq__question').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var item = btn.closest('.faq__item');
+        var answer = item.querySelector('.faq__answer');
+        var isOpen = item.classList.contains('is-open');
+
+        // close all
+        document.querySelectorAll('.faq__item.is-open').forEach(function (openItem) {
+          openItem.classList.remove('is-open');
+          openItem.querySelector('.faq__question').setAttribute('aria-expanded', 'false');
+          openItem.querySelector('.faq__answer').style.maxHeight = null;
+        });
+
+        // open clicked (if it was closed)
+        if (!isOpen) {
+          item.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+      });
+    });
+  })();
+
+  // ====== Block 8 — QUIZ ======
+  (function () {
+    const quiz = document.getElementById('quiz');
+    if (!quiz) return;
+
+    const R = {
+      "A1a":{kg:"6–8",text:"Ти знаєш цей цикл: скинула — повернула. Biopatid вимикає механізм зривів на рівні гормонів. Цього разу вага піде — і не повернеться."},
+      "A1b":{kg:"6–8",text:"Коли їжа займає всі думки — сила волі не допоможе. Biopatid прибирає нав'язливий голод, і ти нарешті перестанеш про це думати."},
+      "A1c":{kg:"7–9",text:"Ти робила все правильно, але тіло не реагувало. Biopatid перезапускає метаболізм через подвійну дію на GIP і GLP-1 — результат буде."},
+      "A1d":{kg:"6–8",text:"Ні часу, ні сил — знайомо. Biopatid працює сам: одна процедура на тиждень, без дієт і тренувань. Ти просто живеш, а вага йде."},
+      "A2a":{kg:"7–9",text:"Раніше частково виходило — значить, твоє тіло відгукується. Biopatid допоможе дійти до кінця без відкатів."},
+      "A2b":{kg:"6–8",text:"Ти вже знаєш, що таке дисципліна — але думки про їжу повертались. Biopatid вимкне цей фоновий шум назавжди."},
+      "A2c":{kg:"7–9",text:"Попередні спроби дали часткові результати, бо метаболізм працював проти тебе. Тепер він працюватиме на тебе."},
+      "A2d":{kg:"6–8",text:"В тебе був досвід — але не було простого рішення. Biopatid не вимагає ні часу, ні зусиль. Просто результат."},
+      "A3a":{kg:"7–9",text:"Перший серйозний крок — і одразу правильний. Biopatid не дасть зірватися, бо прибирає саму причину зривів — неконтрольований апетит."},
+      "A3b":{kg:"6–8",text:"Ти ще не встигла втомитися від дієт — і не встигнеш. Biopatid прибере думки про їжу з першого тижня."},
+      "A3c":{kg:"7–9",text:"Чудово, що починаєш одразу з ефективного рішення. Biopatid працює там, де дієти безсилі — на рівні гормонів."},
+      "A3d":{kg:"6–8",text:"Ідеальний старт для тих, хто цінує свій час. Одна процедура на тиждень — і жодних обмежень у повсякденні."},
+      "B1a":{kg:"10–14",text:"Скільки разів ти скидала і набирала знову? Biopatid розриває це коло — апетит згасає, вага йде стабільно, без ефекту йо-йо."},
+      "B1b":{kg:"10–14",text:"Їжа була головною подією дня — Biopatid зробить її просто паливом. Ти будеш вільна від цієї залежності."},
+      "B1c":{kg:"11–14",text:"Тіло опиралось кожній дієті. Biopatid діє інакше — через подвійний гормональний механізм. Метаболізм нарешті стане твоїм союзником."},
+      "B1d":{kg:"10–13",text:"Жодних тренувань, жодних планів харчування. Одна процедура на тиждень — і 10+ кг за 3 місяці. Для тих, хто живе, а не худне."},
+      "B2a":{kg:"11–14",text:"Раніше результат був — але не тримався. Biopatid дає стабільне зниження, тому що діє на причину, а не симптом."},
+      "B2b":{kg:"10–13",text:"Ти знаєш, що таке контроль — але мозок повертав думки про їжу. Biopatid вимикає цей процес. Тепер контроль — автоматичний."},
+      "B2c":{kg:"11–14",text:"Часткові результати — це доказ, що твоє тіло може. Biopatid допоможе зробити останній ривок — без плато і розчарувань."},
+      "B2d":{kg:"10–13",text:"Ти вже пробувала — і знаєш, скільки це забирає енергії. Biopatid дає результат без жертв. Просто інша хімія тіла."},
+      "B3a":{kg:"11–14",text:"Перший підхід — і одразу рішення, яке не дасть зірватися. Biopatid контролює апетит на рівні нейронів, а не сили волі."},
+      "B3b":{kg:"10–13",text:"Ти ще не знаєш, що таке дієтичне пекло — і не дізнаєшся. Biopatid прибере нав'язливий голод ще до того, як він стане проблемою."},
+      "B3c":{kg:"11–14",text:"Починаєш серйозно — і одразу з інструментом, який працює. Ніяких марних зусиль. Тільки гормональна підтримка і стабільний результат."},
+      "B3d":{kg:"10–13",text:"Немає часу на дієти та зали? Biopatid створений для такого темпу життя. Мінімум зусиль — максимум результату."},
+      "C1a":{kg:"14–18",text:"Кожен відкат був болючим. Biopatid ламає цю схему — ти більше не зірвешся, тому що голод просто зникає. Це не дієта — це інший механізм."},
+      "C1b":{kg:"14–18",text:"Коли їжа — це обсесія, жодна дієта не витримає. Biopatid діє на рівні мозку: думки про їжу розчиняються. Ти будеш вільна."},
+      "C1c":{kg:"15–18",text:"Роки зусиль без результату — це не твоя провина. Твій метаболізм потребував підтримки. Biopatid дає її — подвійну, через GIP і GLP-1."},
+      "C1d":{kg:"14–17",text:"Великий результат без великих жертв. Biopatid працює у фоні: одна процедура на тиждень, і тіло робить решту. Ніякого героїзму."},
+      "C2a":{kg:"15–18",text:"Ти знаєш і злети, і падіння. Biopatid дає стабільну криву вниз — без відкатів. Бо апетит не повертається."},
+      "C2b":{kg:"14–17",text:"Часткові перемоги доводять: ти можеш. Biopatid прибере єдину перешкоду — нав'язливі думки про їжу. Решту ти зробиш сама."},
+      "C2c":{kg:"15–18",text:"Попередні спроби не були марними — вони показали, що потрібен інший підхід. Biopatid працює там, де зусилля закінчувались."},
+      "C2d":{kg:"14–17",text:"Часу мало, ваги багато — Biopatid створений для цього. Без розкладів, без підрахунків. Тільки результат, який росте з кожним тижнем."},
+      "C3a":{kg:"15–18",text:"Перший серйозний крок — і одразу потужний. Biopatid не дасть зірватися: він прибирає саму потребу їсти зайве."},
+      "C3b":{kg:"14–17",text:"Ти починаєш без вантажу минулих невдач — це перевага. Biopatid з першого тижня прибере думки про їжу. Чистий старт."},
+      "C3c":{kg:"15–18",text:"Серйозна ціль потребує серйозного інструменту. Biopatid — це не ще одна спроба. Це медичне рішення з доведеною ефективністю."},
+      "C3d":{kg:"14–17",text:"20+ кг — звучить як виклик. Але Biopatid робить це простим: жодних тренувань, жодних обмежень. Тіло робить роботу за тебе."},
+      "D1a":{kg:"2–4",text:"Ти досягла результату — і боїшся його втратити. Biopatid утримає апетит на комфортному рівні. Без зривів, без повернення."},
+      "D1b":{kg:"2–4",text:"Думки про їжу ще повертаються? Biopatid допоможе остаточно переключитися. Підтримуюча доза тримає баланс без зусиль."},
+      "D1c":{kg:"2–4",text:"Ти знаєш, як важко утримати. Biopatid підтримує метаболізм у новому режимі — вага не повертається."},
+      "D1d":{kg:"2–4",text:"Підтримка результату — найлегша частина з Biopatid. Одна процедура на тиждень — і можеш не думати про вагу."},
+      "D2a":{kg:"3–5",text:"Раніше частково виходило — тепер закріпи це. Biopatid на підтримуючій дозі тримає вагу стабільно, без обмежень."},
+      "D2b":{kg:"2–4",text:"Ти вже зробила головне — тепер не дай думкам про їжу повернутися. Biopatid тримає цей баланс автоматично."},
+      "D2c":{kg:"3–5",text:"Результат є — і він залишиться. Biopatid підтримує обмін речовин, щоб тілу було комфортно у новій вазі."},
+      "D2d":{kg:"2–4",text:"Підтримка без зусиль — саме те, що тобі потрібно. Biopatid працює у фоні, поки ти живеш повноцінним життям."},
+      "D3a":{kg:"3–5",text:"Ти щойно досягла результату — Biopatid не дасть йому зникнути. Підтримуюча програма фіксує нову вагу."},
+      "D3b":{kg:"2–4",text:"Найкращий час закріпити перемогу — зараз. Biopatid прибере залишкові думки про їжу і зафіксує результат."},
+      "D3c":{kg:"3–5",text:"Ти вже довела, що можеш. Biopatid допоможе залишитись у цій точці — без зусиль і без побоювань."},
+      "D3d":{kg:"2–4",text:"Результат під контролем. Biopatid на підтримці — це мінімальна доза, мінімум зусиль, максимум спокою."}
+    };
+
+    let answers = { goal: null, exp: null, obstacle: null };
+    let contras = new Set();
+
+    const steps = quiz.querySelectorAll('.quiz__step');
+    const dots  = quiz.querySelectorAll('.quiz__progress-dot');
+
+    function showStep(n) {
+      steps.forEach(s => s.classList.toggle('is-active', +s.dataset.step === n));
+      dots.forEach((d, i) => {
+        d.classList.remove('is-done','is-current');
+        if (i + 1 < n) d.classList.add('is-done');
+        if (i + 1 === n) d.classList.add('is-current');
+      });
+      if (n === 5) dots.forEach(d => { d.classList.remove('is-current'); d.classList.add('is-done'); });
+      // scroll quiz into view on step change
+      quiz.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    quiz.querySelectorAll('[data-step="1"] .quiz__option').forEach(btn => {
+      btn.addEventListener('click', () => { answers.goal = btn.dataset.value; showStep(2); });
+    });
+    quiz.querySelectorAll('[data-step="2"] .quiz__option').forEach(btn => {
+      btn.addEventListener('click', () => { answers.exp = btn.dataset.value; showStep(3); });
+    });
+    quiz.querySelectorAll('[data-step="3"] .quiz__option').forEach(btn => {
+      btn.addEventListener('click', () => { answers.obstacle = btn.dataset.value; showStep(4); });
+    });
+
+    quiz.querySelectorAll('.quiz__check').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('is-checked');
+        const v = btn.dataset.contra;
+        contras.has(v) ? contras.delete(v) : contras.add(v);
+        updateContraBtn();
+      });
+    });
+
+    const checksDiv = document.getElementById('checks');
+    const nextContra = document.createElement('button');
+    nextContra.className = 'quiz__safe-btn';
+    nextContra.style.background = 'rgba(220,50,50,0.06)';
+    nextContra.style.borderColor = 'rgba(220,50,50,0.3)';
+    nextContra.style.color = '#dc3232';
+    nextContra.style.display = 'none';
+    nextContra.textContent = 'Далі';
+    checksDiv.after(nextContra);
+
+    function updateContraBtn() {
+      nextContra.style.display = contras.size > 0 ? 'block' : 'none';
+      document.getElementById('safe-btn').style.display = contras.size > 0 ? 'none' : 'block';
+    }
+
+    document.getElementById('safe-btn').addEventListener('click', () => {
+      contras.clear();
+      quiz.querySelectorAll('.quiz__check').forEach(b => b.classList.remove('is-checked'));
+      showResult(false);
+    });
+    nextContra.addEventListener('click', () => showResult(true));
+
+    document.getElementById('back2').addEventListener('click', () => showStep(1));
+    document.getElementById('back3').addEventListener('click', () => showStep(2));
+    document.getElementById('back4').addEventListener('click', () => showStep(3));
+
+    function showResult(hasContra) {
+      const el = document.getElementById('result');
+      if (hasContra) {
+        el.innerHTML =
+          '<div class="quiz__result-icon">🩺</div>' +
+          '<h3 class="quiz__result-headline">Дякуємо за чесність.</h3>' +
+          '<p class="quiz__result-text">Для твоєї ситуації важливо спочатку проконсультуватися зі спеціалістом — щоб результат був і безпечним, і стабільним.</p>' +
+          '<a href="https://t.me/" class="quiz__cta" target="_blank" rel="noopener noreferrer">Написати в Telegram</a>' +
+          '<p class="quiz__sub-link">Ми підкажемо як діяти далі</p>' +
+          '<button class="quiz__reset" id="resetBtn">Пройти ще раз</button>';
+      } else {
+        var key = answers.goal + answers.exp + answers.obstacle;
+        var data = R[key] || { kg: "6–8", text: "Biopatid допоможе тобі досягти результату." };
+        el.innerHTML =
+          '<div class="quiz__result-icon">✨</div>' +
+          '<h3 class="quiz__result-headline">Твій персональний прогноз готовий.</h3>' +
+          '<p class="quiz__result-text" style="margin-bottom:12px">На основі твоїх відповідей — реалістичний результат за 3 місяці:</p>' +
+          '<div class="quiz__result-kg">мінус ' + data.kg + ' кг</div>' +
+          '<p class="quiz__result-text">' + data.text + '</p>' +
+          '<a href="#product" class="quiz__cta" onclick="event.preventDefault();document.getElementById(\'product\').scrollIntoView({behavior:\'smooth\'})">Обрати препарат</a>' +
+          '<p class="quiz__sub-link">Є питання? <a href="https://t.me/" target="_blank" rel="noopener noreferrer">Написати в Telegram</a></p>' +
+          '<button class="quiz__reset" id="resetBtn">Пройти ще раз</button>';
+      }
+      showStep(5);
+      document.getElementById('resetBtn').addEventListener('click', () => {
+        answers = { goal: null, exp: null, obstacle: null };
+        contras.clear();
+        quiz.querySelectorAll('.quiz__check').forEach(b => b.classList.remove('is-checked'));
+        updateContraBtn();
+        showStep(1);
+      });
+    }
+  })();
+
+  // ====== Certificate modal — ESC key ======
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      var modal = document.getElementById('cert-modal');
+      if (modal) modal.classList.remove('is-open');
+    }
+  });
+
+  // ====== Block 6 — PRODUCT slider + pills ======
+  (function() {
+    var products = [
+      {
+        name: 'Biopatid',
+        doses: [
+          { label: '40 мг', price: '24 700 ₴', photo: 1 },
+          { label: '60 мг', price: '31 200 ₴', photo: 0 }
+        ]
+      },
+      {
+        name: 'Biopatid Kit',
+        doses: [
+          { label: '1 шт', price: '8 300 ₴', photo: 3 },
+          { label: '6 шт', price: '49 800 ₴', photo: 2 }
+        ]
+      }
+    ];
+
+    var currentProduct = 0, currentDose = 0;
+    var photos = document.querySelectorAll('.product__photo');
+    var dots = document.querySelectorAll('.product__dot');
+    var pills = document.querySelectorAll('.product__pill');
+    var nameEl = document.getElementById('product-name');
+    var doseLabel = document.getElementById('product-dose-label');
+    var priceEl = document.getElementById('product-price');
+    var titleNameEl = document.getElementById('product-title-name');
+
+    function render() {
+      var p = products[currentProduct];
+      var d = p.doses[currentDose];
+      // Photo
+      var activePhotoIdx = currentProduct === 0 ? currentDose : 2 + currentDose;
+      photos.forEach(function(img, i) {
+        img.classList.toggle('product__photo--active', i === activePhotoIdx);
+      });
+      // Dots
+      dots.forEach(function(dot, i) {
+        dot.classList.toggle('product__dot--active', i === currentProduct);
+      });
+      // Pills text
+      pills.forEach(function(pill, i) {
+        pill.classList.toggle('product__pill--active', i === currentDose);
+        var doseInfo = p.doses[i];
+        if (doseInfo) {
+          pill.textContent = doseInfo.label;
+          pill.style.display = '';
+        } else {
+          pill.style.display = 'none';
+        }
+      });
+      // Name, dose, price, title
+      nameEl.textContent = p.name;
+      titleNameEl.textContent = p.name;
+      doseLabel.textContent = d.label;
+      priceEl.textContent = d.price;
+    }
+
+    window.setProduct = function(idx) {
+      currentProduct = idx;
+      currentDose = 0;
+      render();
+    };
+    window.setDose = function(idx) {
+      currentDose = idx;
+      render();
+    };
+    window.productSlider = function(dir) {
+      currentProduct = (currentProduct + dir + products.length) % products.length;
+      currentDose = 0;
+      render();
+    };
+
+    render();
+  })();
+
+  // ====== Mobile menu toggle ======
+  function closeMobileMenu() {
+    var menu = document.querySelector('.nav__mobile-menu');
+    var burger = document.querySelector('.nav__burger');
+    if (menu) menu.classList.remove('is-open');
+    if (burger) burger.classList.remove('is-active');
+  }
+
+  // ====== Carousel scroll/dot sync (Block 3 mobile) ======
+  (function() {
+    var track = document.querySelector('.trans__carousel-track');
+    var dots = document.querySelectorAll('.trans__carousel-dot');
+    if (!track || dots.length === 0) return;
+
+    track.addEventListener('scroll', function() {
+      var scrollLeft = track.scrollLeft;
+      var cardWidth = track.firstElementChild ? track.firstElementChild.offsetWidth + 16 : 1;
+      var idx = Math.round(scrollLeft / cardWidth);
+      idx = Math.max(0, Math.min(idx, dots.length - 1));
+      dots.forEach(function(d, i) {
+        d.classList.toggle('is-active', i === idx);
+      });
+    }, { passive: true });
+
+    dots.forEach(function(dot, i) {
+      dot.addEventListener('click', function() {
+        var card = track.children[i];
+        if (card) {
+          track.scrollTo({ left: card.offsetLeft - track.offsetLeft, behavior: 'smooth' });
+        }
+      });
+    });
+  })();
+
+  // ====== Mobile Hero: swap photo + ticker clone ======
+  (function() {
+    var MOBILE_BP = 640;
+    var heroImg = document.querySelector('.hero__woman');
+    var ticker = document.getElementById('metrics-ticker');
+    var desktopSrc = 'assets/hero-woman.png';
+    var mobileSrc = 'assets/hero-woman2.png';
+    var cloned = false;
+
+    function handleHeroMobile() {
+      var isMobile = window.innerWidth <= MOBILE_BP;
+
+      // Swap hero photo
+      if (heroImg) {
+        heroImg.src = isMobile ? mobileSrc : desktopSrc;
+      }
+
+      // Clone metric cards for seamless ticker loop (mobile only)
+      if (isMobile && ticker && !cloned) {
+        var cards = ticker.querySelectorAll('.metric-card');
+        cards.forEach(function(card) {
+          var clone = card.cloneNode(true);
+          clone.setAttribute('aria-hidden', 'true');
+          ticker.appendChild(clone);
+        });
+        cloned = true;
+      }
+
+      // Remove clones when back to desktop
+      if (!isMobile && ticker && cloned) {
+        var clones = ticker.querySelectorAll('.metric-card[aria-hidden="true"]');
+        clones.forEach(function(clone) { clone.remove(); });
+        cloned = false;
+      }
+    }
+
+    handleHeroMobile();
+    window.addEventListener('resize', handleHeroMobile);
+  })();
+
+  /* ==========================================================
+     MECHANICS — mobile scroll-reveal for steps + dashed arcs
+  ========================================================== */
+  (function() {
+    function isMobile() { return window.innerWidth <= 640; }
+
+    // Scroll-reveal for step cards and dashed arcs
+    var revealEls = document.querySelectorAll('.mechanics__step, .mechanics__step-arc');
+
+    function checkReveal() {
+      if (!isMobile()) {
+        // On desktop: make sure everything is visible
+        revealEls.forEach(fun
