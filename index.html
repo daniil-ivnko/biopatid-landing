@@ -4796,6 +4796,9 @@
       }
     ];
 
+    // Экспортируем массив для обновления из Strapi CMS
+    window._sliderProducts = products;
+
     var currentProduct = 0, currentDose = 0;
     var photos = document.querySelectorAll('.product__photo');
     var dots = document.querySelectorAll('.product__dot');
@@ -4835,6 +4838,7 @@
       priceEl.textContent = d.price;
     }
 
+    window.renderProductSlider = render;
     window.setProduct = function(idx) {
       currentProduct = idx;
       currentDose = 0;
@@ -4966,66 +4970,37 @@
     var STRAPI_URL = 'https://biopatid-cms.onrender.com';
     var API_ENDPOINT = STRAPI_URL + '/api/products?populate=*&sort=sort_order:asc';
 
-    // Маппинг данных Strapi → DOM-элементы
-    function applyProductData(products) {
-      if (!products || !products.length) return;
+    // Маппинг данных Strapi → слайдер продуктов + DOM
+    function applyProductData(cmsProducts) {
+      if (!cmsProducts || !cmsProducts.length) return;
+      var slider = window._sliderProducts;
 
-      // Группируем продукты: первый — основной (Biopatid), второй — Kit (если есть)
-      products.forEach(function(item, idx) {
+      cmsProducts.forEach(function(item, idx) {
         var attrs = item.attributes || item;
+        var currency = attrs.currency || '₴';
+        var price = Number(attrs.price).toLocaleString('uk-UA').replace(/,/g, ' ') + ' ' + currency;
 
-        // Обновляем цену для текущего активного продукта
-        var priceEl = document.getElementById('product-price');
-        if (priceEl && idx === 0) {
-          var formatted = Number(attrs.price).toLocaleString('uk-UA').replace(/,/g, ' ');
-          priceEl.textContent = formatted + ' ' + (attrs.currency || '₴');
-        }
-
-        // Обновляем название
-        var nameEl = document.getElementById('product-name');
-        if (nameEl && idx === 0) {
-          nameEl.textContent = attrs.name || nameEl.textContent;
-        }
-
-        // Обновляем дозировку
-        var doseEl = document.getElementById('product-dose-label');
-        if (doseEl && idx === 0) {
-          doseEl.textContent = attrs.dose || doseEl.textContent;
-        }
-
-        // Обновляем tagline (подзаголовок)
-        var subtitleEl = document.querySelector('.product__subtitle');
-        if (subtitleEl && idx === 0 && attrs.tagline) {
-          subtitleEl.textContent = attrs.tagline;
-        }
-
-        // Обновляем описание (includes)
-        var includesEl = document.querySelector('.product__includes');
-        if (includesEl && idx === 0 && attrs.includes) {
-          includesEl.textContent = attrs.includes;
-        }
-
-        // Обновляем фото продукта
-        if (attrs.photo && attrs.photo.data) {
-          var photoUrl = STRAPI_URL + attrs.photo.data.attributes.url;
-          var photoEls = document.querySelectorAll('.product__photo[data-product="' + idx + '"]:not([data-dose])');
-          photoEls.forEach(function(img) {
-            img.src = photoUrl;
-            img.alt = attrs.name + ' ' + attrs.dose;
-          });
-        }
-
-        // Обновляем альтернативное фото (другая дозировка)
-        if (attrs.photo_alt && attrs.photo_alt.data) {
-          var altUrl = STRAPI_URL + attrs.photo_alt.data.attributes.url;
-          var altEls = document.querySelectorAll('.product__photo[data-product="' + idx + '"][data-dose="1"]');
-          altEls.forEach(function(img) {
-            img.src = altUrl;
-          });
+        // Обновляем цену в массиве слайдера (последняя дозировка — основная)
+        if (slider && slider[idx]) {
+          var doses = slider[idx].doses;
+          if (doses && doses.length > 0) {
+            doses[doses.length - 1].price = price;
+          }
+          slider[idx].name = attrs.name || slider[idx].name;
         }
       });
 
-      console.log('[Strapi] Product data loaded successfully (' + products.length + ' items)');
+      // Перерисовываем слайдер с обновлёнными ценами
+      if (window.renderProductSlider) window.renderProductSlider();
+
+      // Обновляем tagline и includes (только для первого продукта)
+      var firstAttrs = (cmsProducts[0].attributes || cmsProducts[0]);
+      var subtitleEl = document.querySelector('.product__subtitle');
+      if (subtitleEl && firstAttrs.tagline) subtitleEl.textContent = firstAttrs.tagline;
+      var includesEl = document.querySelector('.product__includes');
+      if (includesEl && firstAttrs.includes) includesEl.textContent = firstAttrs.includes;
+
+      console.log('[Strapi] Product data loaded successfully (' + cmsProducts.length + ' items)');
     }
 
     // Загрузка данных
