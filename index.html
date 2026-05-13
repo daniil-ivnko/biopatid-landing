@@ -4964,7 +4964,7 @@
   (function() {
     // ⚡ НАСТРОЙКА: замени на реальный URL Strapi после деплоя
     var STRAPI_URL = 'https://biopatid-cms.onrender.com';
-    var API_ENDPOINT = STRAPI_URL + '/api/products?populate=photo,photo_alt&sort=sort_order:asc';
+    var API_ENDPOINT = STRAPI_URL + '/api/products?populate=*&sort=sort_order:asc';
 
     // Маппинг данных Strapi → DOM-элементы
     function applyProductData(products) {
