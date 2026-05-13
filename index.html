@@ -4980,11 +4980,18 @@
         var currency = attrs.currency || '₴';
         var price = Number(attrs.price).toLocaleString('uk-UA').replace(/,/g, ' ') + ' ' + currency;
 
-        // Обновляем цену в массиве слайдера (последняя дозировка — основная)
         if (slider && slider[idx]) {
           var doses = slider[idx].doses;
+          // Обновляем основную дозировку (последняя в массиве)
           if (doses && doses.length > 0) {
             doses[doses.length - 1].price = price;
+            if (attrs.dose) doses[doses.length - 1].label = attrs.dose;
+          }
+          // Обновляем альтернативную дозировку (первая в массиве)
+          if (doses && doses.length > 1 && attrs.price_alt) {
+            var priceAlt = Number(attrs.price_alt).toLocaleString('uk-UA').replace(/,/g, ' ') + ' ' + currency;
+            doses[0].price = priceAlt;
+            if (attrs.dose_alt) doses[0].label = attrs.dose_alt;
           }
           slider[idx].name = attrs.name || slider[idx].name;
         }
