@@ -4235,6 +4235,7 @@
     const wrapper = document.querySelector('.page-fit');
     function fit() {
       const vw = document.documentElement.clientWidth;
+      console.log('[FIT] vw=' + vw + ' rawScale=' + Math.min(vw/TARGET_W,1).toFixed(4) + ' pageExists=' + !!page);
 
       // On screens <= 1024px, disable zoom and let responsive CSS handle layout
       if (vw <= 1024) {
@@ -5005,7 +5006,4 @@
       var subtitleEl = document.querySelector('.product__subtitle');
       if (subtitleEl && firstAttrs.tagline) subtitleEl.textContent = firstAttrs.tagline;
       var includesEl = document.querySelector('.product__includes');
-      if (includesEl && firstAttrs.includes) includesEl.textContent = firstAttrs.includes;
-
-      console.log('[Strapi] Product data loaded successfully (' + cmsProducts.length + ' items)');
- 
+      if (includesEl && firstAttrs.includes) includesEl.textContent = firstAt
