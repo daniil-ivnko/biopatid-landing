@@ -5023,3 +5023,12 @@
       })
       .then(function(json) {
         applyProductData(json.data || []);
+      })
+      .catch(function(err) {
+        console.log('[Strapi] API unavailable, using fallback HTML content. (' + err.message + ')');
+      });
+  })();
+</script>
+
+</body>
+</html>
