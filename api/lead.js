@@ -60,8 +60,9 @@ function buildQuizMessage(d) {
   const lines = [];
   lines.push('<b>🧭 НОВА ЗАЯВКА · Квіз</b>');
   lines.push('');
-  lines.push('<b>Клієнт:</b> ' + esc(clip((d.firstName || '') + ' ' + (d.lastName || ''), 160)));
+  lines.push('<b>Імʼя:</b> ' + esc(clip(d.firstName, 120)));
   lines.push('<b>Телефон:</b> ' + esc(clip(d.phone, 40)));
+  if (d.telegram) lines.push('<b>Telegram:</b> ' + esc(clip(d.telegram, 80)));
   lines.push('');
   lines.push('<b>Відповіді квіза:</b>');
   if (d.goal)     lines.push('• <b>Мета:</b> ' + esc(clip(d.goal, 200)));

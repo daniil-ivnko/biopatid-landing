@@ -2332,7 +2332,11 @@
       letter-spacing: 3px;
       text-transform: uppercase;
       color: #FFFFFF;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
     }
+    .footer__logo:hover { opacity: 0.6; }
     .footer__contacts {
       display: flex;
       align-items: center;
@@ -3641,7 +3645,7 @@
       <a href="#faq">FAQ</a>
     </nav>
 
-    <a href="#product" class="nav__cta">Підібрати програму</a>
+    <a href="#cta" class="nav__cta">Підібрати програму</a>
 
     <button class="nav__burger" aria-label="Меню" onclick="document.querySelector('.nav__mobile-menu').classList.toggle('is-open');this.classList.toggle('is-active')">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -3660,7 +3664,7 @@
     <a href="#mechanics" onclick="closeMobileMenu()">Препарат</a>
     <a href="#results" onclick="closeMobileMenu()">Результати</a>
     <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
-    <a href="#product" class="nav__mobile-cta" onclick="closeMobileMenu()">Підібрати програму</a>
+    <a href="#cta" class="nav__mobile-cta" onclick="closeMobileMenu()">Підібрати програму</a>
   </nav>
 </div>
 
@@ -4296,7 +4300,7 @@
       </div>
 
       <p class="product__wholesale">
-        Ви косметолог або власник клініки? <a href="#product">Оптові умови тут</a>
+        Ви косметолог або власник клініки? <a href="https://t.me/+380739111755" target="_blank" rel="noopener noreferrer">Оптові умови тут</a>
       </p>
     </div>
   </section>
@@ -4439,21 +4443,21 @@
         <div class="quiz__result" id="result"></div>
       </div>
 
-      <p class="quiz__wholesale">Ви косметолог або власник клініки? <a href="#product">Оптові умови тут</a></p>
+      <p class="quiz__wholesale">Ви косметолог або власник клініки? <a href="https://t.me/+380739111755" target="_blank" rel="noopener noreferrer">Оптові умови тут</a></p>
     </div>
   </section>
 
   <!-- ============ FOOTER ============ -->
   <footer class="footer">
     <div class="footer__inner">
-      <span class="footer__logo">Biopatid</span>
+      <a href="javascript:void(0)" class="footer__logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">Biopatid</a>
       <div class="footer__contacts">
         <a href="javascript:void(0)" onclick="document.getElementById('cert-modal').classList.add('is-open')">Сертифікат</a>
         <span>·</span>
         <a href="tel:+380739111755">+38 073 911 17 55</a>
-        <a href="https://t.me/" target="_blank" rel="noopener noreferrer">Telegram</a>
+        <a href="https://t.me/+380739111755" target="_blank" rel="noopener noreferrer">Telegram</a>
         <span>·</span>
-        <a href="viber://chat" target="_blank" rel="noopener noreferrer">Viber</a>
+        <a href="viber://chat?number=%2B380739111755" target="_blank" rel="noopener noreferrer">Viber</a>
       </div>
       <span class="footer__copy">© 2026 Biopatid. Всі права захищені.</span>
     </div>
@@ -5066,7 +5070,7 @@
           '<div class="quiz__result-icon">🩺</div>' +
           '<h3 class="quiz__result-headline">Дякуємо за чесність.</h3>' +
           '<p class="quiz__result-text">Для твоєї ситуації важливо спочатку проконсультуватися зі спеціалістом — щоб результат був і безпечним, і стабільним.</p>' +
-          '<a href="https://t.me/" class="quiz__cta" target="_blank" rel="noopener noreferrer">Написати в Telegram</a>' +
+          '<a href="https://t.me/+380739111755" class="quiz__cta" target="_blank" rel="noopener noreferrer">Написати в Telegram</a>' +
           '<p class="quiz__sub-link">Ми підкажемо як діяти далі</p>' +
           '<button class="quiz__reset" id="resetBtn">Пройти ще раз</button>';
       } else {
@@ -5084,7 +5088,7 @@
             '<form id="quiz-form" novalidate>' +
               '<div class="lead-row">' +
                 '<div class="lead-field"><label class="lead-field__label" for="quiz-firstName">Імʼя <span>*</span></label><input class="lead-input" type="text" id="quiz-firstName" name="firstName" autocomplete="given-name"></div>' +
-                '<div class="lead-field"><label class="lead-field__label" for="quiz-lastName">Прізвище <span>*</span></label><input class="lead-input" type="text" id="quiz-lastName" name="lastName" autocomplete="family-name"></div>' +
+                '<div class="lead-field"><label class="lead-field__label" for="quiz-telegram">Telegram</label><input class="lead-input" type="text" id="quiz-telegram" name="telegram" placeholder="@nik" autocomplete="off"></div>' +
               '</div>' +
               '<div class="lead-field"><label class="lead-field__label" for="quiz-phone">Телефон <span>*</span></label><input class="lead-input" type="tel" id="quiz-phone" name="phone" placeholder="+38 0__ ___ __ __" autocomplete="tel"></div>' +
               '<input class="lead-hp" type="text" id="quiz-company" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">' +
@@ -5110,14 +5114,13 @@
         qf.addEventListener('submit', function(e) {
           e.preventDefault();
           var fn = document.getElementById('quiz-firstName');
-          var ln = document.getElementById('quiz-lastName');
+          var tg = document.getElementById('quiz-telegram');
           var ph = document.getElementById('quiz-phone');
           var err = document.getElementById('quiz-error');
           err.classList.remove('is-visible'); err.textContent = '';
-          [fn, ln, ph].forEach(function(x) { x.classList.remove('is-error'); });
+          [fn, ph].forEach(function(x) { x.classList.remove('is-error'); });
           var bad = false;
           if (!fn.value.trim()) { fn.classList.add('is-error'); bad = true; }
-          if (!ln.value.trim()) { ln.classList.add('is-error'); bad = true; }
           if (!window.leadValidPhone(ph.value)) { ph.classList.add('is-error'); bad = true; }
           if (bad) {
             err.textContent = 'Будь ласка, заповніть обовʼязкові поля.';
@@ -5130,7 +5133,7 @@
           window.sendLead({
             type: 'quiz',
             firstName: firstName,
-            lastName: ln.value.trim(),
+            telegram: tg.value.trim(),
             phone: ph.value.trim(),
             goal: answers.goalText,
             exp: answers.expText,
