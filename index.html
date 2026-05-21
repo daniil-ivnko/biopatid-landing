@@ -5204,7 +5204,7 @@
       var p = products[currentProduct];
       var d = p.doses[currentDose];
       // Photo
-      var activePhotoIdx = currentProduct === 0 ? currentDose : 2 + currentDose;
+      var activePhotoIdx = d.photo;
       photos.forEach(function(img, i) {
         img.classList.toggle('product__photo--active', i === activePhotoIdx);
       });
