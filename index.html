@@ -2419,6 +2419,250 @@
       height: 100%;
       border: none;
     }
+
+    /* ==========================================================
+       LEAD — модалка заявки + форма контактов в квизе
+    ========================================================== */
+    .lead-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(26, 40, 71, 0.55);
+      backdrop-filter: blur(6px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .lead-modal.is-open { opacity: 1; visibility: visible; }
+    .lead-modal__card {
+      position: relative;
+      width: 100%;
+      max-width: 460px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #FFFFFF;
+      border-radius: 24px;
+      padding: 36px 34px 34px;
+      box-shadow: 0 32px 80px rgba(26, 40, 71, 0.35);
+      transform: scale(0.94) translateY(16px);
+      transition: transform 0.3s ease;
+    }
+    .lead-modal.is-open .lead-modal__card { transform: scale(1) translateY(0); }
+    .lead-modal__close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(26, 40, 71, 0.06);
+      color: var(--c-text);
+      font-size: 22px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      transition: background 0.2s ease;
+    }
+    .lead-modal__close:hover { background: rgba(26, 40, 71, 0.12); }
+    .lead-modal__title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--c-text);
+      margin-bottom: 6px;
+      padding-right: 32px;
+    }
+    .lead-modal__subtitle {
+      font-size: 13px;
+      color: var(--c-text-60);
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+    .lead-summary {
+      background: rgba(92, 72, 146, 0.06);
+      border-radius: 16px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+    }
+    .lead-summary__row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .lead-summary__name {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--c-text);
+    }
+    .lead-summary__unit {
+      font-size: 12px;
+      color: var(--c-text-60);
+      margin-top: 3px;
+    }
+    .lead-qty { display: flex; align-items: center; gap: 6px; }
+    .lead-qty__btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: #FFFFFF;
+      border: 1px solid rgba(26, 40, 71, 0.15);
+      color: var(--c-text);
+      font-size: 18px;
+      display: grid;
+      place-items: center;
+      transition: border-color 0.2s ease;
+    }
+    .lead-qty__btn:hover { border-color: var(--c-accent); }
+    .lead-qty__val {
+      min-width: 34px;
+      text-align: center;
+      font-family: 'Unbounded', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .lead-summary__total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(26, 40, 71, 0.10);
+    }
+    .lead-summary__total-label { font-size: 13px; color: var(--c-text-60); }
+    .lead-summary__total-val {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--c-accent);
+    }
+    .lead-field { margin-bottom: 14px; }
+    .lead-field__label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--c-text-60);
+      margin-bottom: 6px;
+    }
+    .lead-field__label span { color: #dc3232; }
+    .lead-input, .lead-textarea {
+      width: 100%;
+      box-sizing: border-box;
+      font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+      font-size: 15px;
+      color: var(--c-text);
+      padding: 13px 15px;
+      border: 1px solid rgba(26, 40, 71, 0.16);
+      border-radius: 12px;
+      background: #FFFFFF;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .lead-input:focus, .lead-textarea:focus {
+      border-color: var(--c-accent);
+      box-shadow: 0 0 0 3px rgba(92, 72, 146, 0.12);
+    }
+    .lead-input.is-error, .lead-textarea.is-error { border-color: #dc3232; }
+    .lead-textarea { resize: vertical; min-height: 64px; }
+    .lead-row { display: flex; gap: 12px; }
+    .lead-row .lead-field { flex: 1; }
+    .lead-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+    .lead-submit {
+      width: 100%;
+      margin-top: 8px;
+      padding: 17px 24px;
+      border-radius: 999px;
+      background: var(--c-accent);
+      color: #FFFFFF;
+      font-family: 'Unbounded', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+    }
+    .lead-submit:hover { background: var(--c-text); transform: translateY(-2px); }
+    .lead-submit:disabled { opacity: 0.6; cursor: default; transform: none; }
+    .lead-note {
+      margin-top: 14px;
+      font-size: 11.5px;
+      line-height: 1.5;
+      color: var(--c-text-50);
+      text-align: center;
+    }
+    .lead-error {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: rgba(220, 50, 50, 0.08);
+      border-radius: 10px;
+      font-size: 13px;
+      color: #dc3232;
+      text-align: center;
+    }
+    .lead-error.is-visible { display: block; }
+    .lead-success { display: none; text-align: center; padding: 16px 0 8px; }
+    .lead-success.is-visible { display: block; }
+    .lead-success__icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background: rgba(92, 72, 146, 0.10);
+      display: grid;
+      place-items: center;
+    }
+    .lead-success__icon svg { width: 30px; height: 30px; stroke: var(--c-accent); }
+    .lead-success__title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--c-text);
+      margin-bottom: 10px;
+    }
+    .lead-success__text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--c-text-60);
+      margin-bottom: 20px;
+    }
+    .lead-success__btn {
+      display: inline-flex;
+      padding: 13px 32px;
+      border-radius: 999px;
+      background: rgba(92, 72, 146, 0.10);
+      color: var(--c-accent);
+      font-family: 'Unbounded', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    @media (max-width: 768px) {
+      .lead-modal { padding: 16px; }
+      .lead-modal__card { padding: 30px 22px 26px; border-radius: 20px; }
+      .lead-modal__title { font-size: 19px; }
+      .lead-row { flex-direction: column; gap: 0; }
+    }
+    /* форма контактов внутри квиза */
+    .quiz-lead { margin-top: 26px; text-align: left; }
+    .quiz-lead__title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--c-text);
+      margin-bottom: 4px;
+      text-align: center;
+    }
+    .quiz-lead__subtitle {
+      font-size: 13px;
+      color: var(--c-text-60);
+      margin-bottom: 18px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
     /* ==========================================================================
        MOBILE MENU — base styles (hidden on desktop)
     ========================================================================== */
@@ -4047,7 +4291,7 @@
             <span class="product__price-label">Ціна</span>
             <span class="product__price" id="product-price">31 200 ₴</span>
           </div>
-          <a href="#quiz" class="product__cta">Придбати курс</a>
+          <button type="button" class="product__cta" onclick="openOrderModal()">Замовити</button>
         </div>
       </div>
 
@@ -4220,6 +4464,80 @@
     <div class="cert-modal__card">
       <button class="cert-modal__close" onclick="document.getElementById('cert-modal').classList.remove('is-open')" aria-label="Закрити">&times;</button>
       <iframe class="cert-modal__iframe" src="assets/Сертифікат_Біопатид.pdf"></iframe>
+    </div>
+  </div>
+
+  <!-- Order Modal — заявка с блока продуктов -->
+  <div class="lead-modal" id="order-modal" onclick="if(event.target===this)closeOrderModal()">
+    <div class="lead-modal__card">
+      <button class="lead-modal__close" onclick="closeOrderModal()" aria-label="Закрити">&times;</button>
+
+      <div id="order-form-wrap">
+        <h3 class="lead-modal__title">Оформлення замовлення</h3>
+        <p class="lead-modal__subtitle">Залиште контакти — менеджер звʼяжеться, підтвердить замовлення та деталі доставки.</p>
+
+        <div class="lead-summary">
+          <div class="lead-summary__row">
+            <div>
+              <div class="lead-summary__name" id="order-product-name">Biopatid</div>
+              <div class="lead-summary__unit"><span id="order-product-dose">60 мг</span> · <span id="order-unit-price">31 200 ₴</span> / шт</div>
+            </div>
+            <div class="lead-qty">
+              <button type="button" class="lead-qty__btn" onclick="orderChangeQty(-1)" aria-label="Менше">&minus;</button>
+              <span class="lead-qty__val" id="order-qty">1</span>
+              <button type="button" class="lead-qty__btn" onclick="orderChangeQty(1)" aria-label="Більше">+</button>
+            </div>
+          </div>
+          <div class="lead-summary__total">
+            <span class="lead-summary__total-label">Разом</span>
+            <span class="lead-summary__total-val" id="order-total">31 200 ₴</span>
+          </div>
+        </div>
+
+        <form id="order-form" novalidate>
+          <div class="lead-row">
+            <div class="lead-field">
+              <label class="lead-field__label" for="order-firstName">Імʼя <span>*</span></label>
+              <input class="lead-input" type="text" id="order-firstName" name="firstName" autocomplete="given-name">
+            </div>
+            <div class="lead-field">
+              <label class="lead-field__label" for="order-lastName">Прізвище <span>*</span></label>
+              <input class="lead-input" type="text" id="order-lastName" name="lastName" autocomplete="family-name">
+            </div>
+          </div>
+          <div class="lead-field">
+            <label class="lead-field__label" for="order-phone">Телефон <span>*</span></label>
+            <input class="lead-input" type="tel" id="order-phone" name="phone" placeholder="+38 0__ ___ __ __" autocomplete="tel">
+          </div>
+          <div class="lead-row">
+            <div class="lead-field">
+              <label class="lead-field__label" for="order-city">Місто <span>*</span></label>
+              <input class="lead-input" type="text" id="order-city" name="city" placeholder="Напр. Київ">
+            </div>
+            <div class="lead-field">
+              <label class="lead-field__label" for="order-warehouse">№ відділення Нової Пошти <span>*</span></label>
+              <input class="lead-input" type="text" id="order-warehouse" name="warehouse" placeholder="Напр. 5">
+            </div>
+          </div>
+          <div class="lead-field">
+            <label class="lead-field__label" for="order-comment">Коментар (необовʼязково)</label>
+            <textarea class="lead-textarea" id="order-comment" name="comment" placeholder="Зручний час дзвінка, побажання…"></textarea>
+          </div>
+          <input class="lead-hp" type="text" id="order-company" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button type="submit" class="lead-submit" id="order-submit">Надіслати заявку</button>
+          <div class="lead-error" id="order-error"></div>
+          <p class="lead-note">Натискаючи кнопку, ви погоджуєтесь на обробку даних для звʼязку щодо замовлення. Оплата — за домовленістю з менеджером.</p>
+        </form>
+      </div>
+
+      <div class="lead-success" id="order-success">
+        <div class="lead-success__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3 class="lead-success__title">Заявку прийнято</h3>
+        <p class="lead-success__text">Дякуємо! Менеджер звʼяжеться з вами найближчим часом, щоб підтвердити замовлення та деталі доставки.</p>
+        <button type="button" class="lead-success__btn" onclick="closeOrderModal()">Зрозуміло</button>
+      </div>
     </div>
   </div>
 
@@ -4677,7 +4995,7 @@
       "D3d":{kg:"2–4",text:"Результат під контролем. Biopatid на підтримці — це мінімальна доза, мінімум зусиль, максимум спокою."}
     };
 
-    let answers = { goal: null, exp: null, obstacle: null };
+    let answers = { goal: null, exp: null, obstacle: null, goalText: '', expText: '', obstacleText: '' };
     let contras = new Set();
 
     const steps = quiz.querySelectorAll('.quiz__step');
@@ -4696,13 +5014,13 @@
     }
 
     quiz.querySelectorAll('[data-step="1"] .quiz__option').forEach(btn => {
-      btn.addEventListener('click', () => { answers.goal = btn.dataset.value; showStep(2); });
+      btn.addEventListener('click', () => { answers.goal = btn.dataset.value; answers.goalText = btn.textContent.trim(); showStep(2); });
     });
     quiz.querySelectorAll('[data-step="2"] .quiz__option').forEach(btn => {
-      btn.addEventListener('click', () => { answers.exp = btn.dataset.value; showStep(3); });
+      btn.addEventListener('click', () => { answers.exp = btn.dataset.value; answers.expText = btn.textContent.trim(); showStep(3); });
     });
     quiz.querySelectorAll('[data-step="3"] .quiz__option').forEach(btn => {
-      btn.addEventListener('click', () => { answers.obstacle = btn.dataset.value; showStep(4); });
+      btn.addEventListener('click', () => { answers.obstacle = btn.dataset.value; answers.obstacleText = btn.textContent.trim(); showStep(4); });
     });
 
     quiz.querySelectorAll('.quiz__check').forEach(btn => {
@@ -4742,6 +5060,7 @@
 
     function showResult(hasContra) {
       const el = document.getElementById('result');
+      var data = null;
       if (hasContra) {
         el.innerHTML =
           '<div class="quiz__result-icon">🩺</div>' +
@@ -4752,25 +5071,90 @@
           '<button class="quiz__reset" id="resetBtn">Пройти ще раз</button>';
       } else {
         var key = answers.goal + answers.exp + answers.obstacle;
-        var data = R[key] || { kg: "6–8", text: "Biopatid допоможе тобі досягти результату." };
+        data = R[key] || { kg: "6–8", text: "Biopatid допоможе тобі досягти результату." };
         el.innerHTML =
           '<div class="quiz__result-icon">✨</div>' +
           '<h3 class="quiz__result-headline">Твій персональний прогноз готовий.</h3>' +
           '<p class="quiz__result-text" style="margin-bottom:12px">На основі твоїх відповідей — реалістичний результат за 3 місяці:</p>' +
           '<div class="quiz__result-kg">мінус ' + data.kg + ' кг</div>' +
           '<p class="quiz__result-text">' + data.text + '</p>' +
-          '<a href="#product" class="quiz__cta" onclick="event.preventDefault();document.getElementById(\'product\').scrollIntoView({behavior:\'smooth\'})">Обрати препарат</a>' +
-          '<p class="quiz__sub-link">Є питання? <a href="https://t.me/" target="_blank" rel="noopener noreferrer">Написати в Telegram</a></p>' +
+          '<div class="quiz-lead">' +
+            '<p class="quiz-lead__title">Залиш контакти — підберемо курс саме під тебе</p>' +
+            '<p class="quiz-lead__subtitle">Менеджер звʼяжеться, відповість на питання та допоможе з вибором. Спокійно, без тиску.</p>' +
+            '<form id="quiz-form" novalidate>' +
+              '<div class="lead-row">' +
+                '<div class="lead-field"><label class="lead-field__label" for="quiz-firstName">Імʼя <span>*</span></label><input class="lead-input" type="text" id="quiz-firstName" name="firstName" autocomplete="given-name"></div>' +
+                '<div class="lead-field"><label class="lead-field__label" for="quiz-lastName">Прізвище <span>*</span></label><input class="lead-input" type="text" id="quiz-lastName" name="lastName" autocomplete="family-name"></div>' +
+              '</div>' +
+              '<div class="lead-field"><label class="lead-field__label" for="quiz-phone">Телефон <span>*</span></label><input class="lead-input" type="tel" id="quiz-phone" name="phone" placeholder="+38 0__ ___ __ __" autocomplete="tel"></div>' +
+              '<input class="lead-hp" type="text" id="quiz-company" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">' +
+              '<button type="submit" class="lead-submit" id="quiz-submit">Отримати консультацію</button>' +
+              '<div class="lead-error" id="quiz-error"></div>' +
+              '<p class="lead-note">Натискаючи кнопку, ви погоджуєтесь на обробку даних для звʼязку.</p>' +
+            '</form>' +
+          '</div>' +
           '<button class="quiz__reset" id="resetBtn">Пройти ще раз</button>';
       }
       showStep(5);
+
       document.getElementById('resetBtn').addEventListener('click', () => {
-        answers = { goal: null, exp: null, obstacle: null };
+        answers = { goal: null, exp: null, obstacle: null, goalText: '', expText: '', obstacleText: '' };
         contras.clear();
         quiz.querySelectorAll('.quiz__check').forEach(b => b.classList.remove('is-checked'));
         updateContraBtn();
         showStep(1);
       });
+
+      var qf = document.getElementById('quiz-form');
+      if (qf) {
+        qf.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var fn = document.getElementById('quiz-firstName');
+          var ln = document.getElementById('quiz-lastName');
+          var ph = document.getElementById('quiz-phone');
+          var err = document.getElementById('quiz-error');
+          err.classList.remove('is-visible'); err.textContent = '';
+          [fn, ln, ph].forEach(function(x) { x.classList.remove('is-error'); });
+          var bad = false;
+          if (!fn.value.trim()) { fn.classList.add('is-error'); bad = true; }
+          if (!ln.value.trim()) { ln.classList.add('is-error'); bad = true; }
+          if (!window.leadValidPhone(ph.value)) { ph.classList.add('is-error'); bad = true; }
+          if (bad) {
+            err.textContent = 'Будь ласка, заповніть обовʼязкові поля.';
+            err.classList.add('is-visible');
+            return;
+          }
+          var btn = document.getElementById('quiz-submit');
+          btn.disabled = true; btn.textContent = 'Надсилаємо…';
+          var firstName = fn.value.trim();
+          window.sendLead({
+            type: 'quiz',
+            firstName: firstName,
+            lastName: ln.value.trim(),
+            phone: ph.value.trim(),
+            goal: answers.goalText,
+            exp: answers.expText,
+            obstacle: answers.obstacleText,
+            forecast: data ? ('мінус ' + data.kg + ' кг') : '',
+            company: document.getElementById('quiz-company').value
+          }).then(function(r) {
+            if (r.status === 200 && r.data && r.data.ok) {
+              el.innerHTML =
+                '<div class="quiz__result-icon">✨</div>' +
+                '<h3 class="quiz__result-headline">Дякуємо, ' + firstName.replace(/[<>&]/g, '') + '!</h3>' +
+                '<p class="quiz__result-text">Ми отримали твої відповіді. Менеджер звʼяжеться з тобою найближчим часом — допоможе підібрати курс спокійно і без поспіху.</p>';
+            } else {
+              err.textContent = (r.data && r.data.error) || 'Не вдалося надіслати. Спробуйте ще раз.';
+              err.classList.add('is-visible');
+              btn.disabled = false; btn.textContent = 'Отримати консультацію';
+            }
+          }).catch(function() {
+            err.textContent = 'Помилка зʼєднання. Спробуйте ще раз.';
+            err.classList.add('is-visible');
+            btn.disabled = false; btn.textContent = 'Отримати консультацію';
+          });
+        });
+      }
     }
   })();
 
@@ -5027,6 +5411,142 @@
       .catch(function(err) {
         console.log('[Strapi] API unavailable, using fallback HTML content. (' + err.message + ')');
       });
+  })();
+</script>
+
+<script>
+  // ====== LEAD — отправка заявок в Telegram через /api/lead ======
+  (function() {
+    // POST на serverless-функцию, возвращает { status, data }
+    window.sendLead = function(payload) {
+      return fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function(res) {
+        return res.json()
+          .catch(function() { return { ok: false }; })
+          .then(function(data) { return { status: res.status, data: data }; });
+      });
+    };
+
+    // "31 200 ₴" -> 31200
+    window.leadParsePrice = function(str) {
+      var digits = String(str || '').replace(/[^0-9]/g, '');
+      return digits ? parseInt(digits, 10) : 0;
+    };
+    // 62400 -> "62 400 ₴"
+    window.leadFormatUAH = function(num) {
+      return num.toLocaleString('uk-UA').replace(/\s/g, ' ') + ' ₴';
+    };
+    // минимум 9 цифр в номере
+    window.leadValidPhone = function(v) {
+      return (String(v).match(/\d/g) || []).length >= 9;
+    };
+  })();
+
+  // ====== Order modal — заявка с блока продуктов ======
+  (function() {
+    var modal = document.getElementById('order-modal');
+    if (!modal) return;
+    var qty = 1, unitPrice = 0;
+
+    function render() {
+      document.getElementById('order-qty').textContent = qty;
+      document.getElementById('order-total').textContent =
+        unitPrice ? window.leadFormatUAH(unitPrice * qty) : '—';
+    }
+    function clearErrors() {
+      var e = document.getElementById('order-error');
+      e.classList.remove('is-visible'); e.textContent = '';
+      ['order-firstName', 'order-lastName', 'order-phone', 'order-city', 'order-warehouse']
+        .forEach(function(id) { document.getElementById(id).classList.remove('is-error'); });
+    }
+    function showError(msg) {
+      var e = document.getElementById('order-error');
+      e.textContent = msg; e.classList.add('is-visible');
+    }
+
+    window.openOrderModal = function() {
+      qty = 1;
+      var name = document.getElementById('product-name');
+      var dose = document.getElementById('product-dose-label');
+      var price = document.getElementById('product-price');
+      name = name ? name.textContent.trim() : 'Biopatid';
+      dose = dose ? dose.textContent.trim() : '';
+      price = price ? price.textContent.trim() : '';
+      unitPrice = window.leadParsePrice(price);
+      document.getElementById('order-product-name').textContent = name;
+      document.getElementById('order-product-dose').textContent = dose;
+      document.getElementById('order-unit-price').textContent = price || '—';
+      document.getElementById('order-form').reset();
+      document.getElementById('order-form-wrap').style.display = '';
+      document.getElementById('order-success').classList.remove('is-visible');
+      var btn = document.getElementById('order-submit');
+      btn.disabled = false; btn.textContent = 'Надіслати заявку';
+      clearErrors();
+      render();
+      modal.classList.add('is-open');
+    };
+    window.closeOrderModal = function() {
+      modal.classList.remove('is-open');
+    };
+    window.orderChangeQty = function(delta) {
+      qty = Math.max(1, Math.min(99, qty + delta));
+      render();
+    };
+
+    document.getElementById('order-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      clearErrors();
+      var f = {
+        firstName: document.getElementById('order-firstName'),
+        lastName: document.getElementById('order-lastName'),
+        phone: document.getElementById('order-phone'),
+        city: document.getElementById('order-city'),
+        warehouse: document.getElementById('order-warehouse')
+      };
+      var bad = false;
+      ['firstName', 'lastName', 'city', 'warehouse'].forEach(function(k) {
+        if (!f[k].value.trim()) { f[k].classList.add('is-error'); bad = true; }
+      });
+      if (!window.leadValidPhone(f.phone.value)) { f.phone.classList.add('is-error'); bad = true; }
+      if (bad) { showError('Будь ласка, заповніть обовʼязкові поля.'); return; }
+
+      var btn = document.getElementById('order-submit');
+      btn.disabled = true; btn.textContent = 'Надсилаємо…';
+
+      var name = document.getElementById('order-product-name').textContent;
+      var dose = document.getElementById('order-product-dose').textContent;
+      window.sendLead({
+        type: 'order',
+        firstName: f.firstName.value.trim(),
+        lastName: f.lastName.value.trim(),
+        phone: f.phone.value.trim(),
+        city: f.city.value.trim(),
+        warehouse: f.warehouse.value.trim(),
+        comment: document.getElementById('order-comment').value.trim(),
+        product: name + (dose ? ' · ' + dose : ''),
+        qty: qty,
+        total: unitPrice ? window.leadFormatUAH(unitPrice * qty) : '',
+        company: document.getElementById('order-company').value
+      }).then(function(r) {
+        if (r.status === 200 && r.data && r.data.ok) {
+          document.getElementById('order-form-wrap').style.display = 'none';
+          document.getElementById('order-success').classList.add('is-visible');
+        } else {
+          showError((r.data && r.data.error) || 'Не вдалося надіслати. Спробуйте ще раз.');
+          btn.disabled = false; btn.textContent = 'Надіслати заявку';
+        }
+      }).catch(function() {
+        showError('Помилка зʼєднання. Перевірте інтернет і спробуйте ще раз.');
+        btn.disabled = false; btn.textContent = 'Надіслати заявку';
+      });
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) window.closeOrderModal();
+    });
   })();
 </script>
 
