@@ -5655,8 +5655,22 @@
           io.unobserve(e.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    }, { threshold: 0.01 });
     nodes.forEach(function(n) { io.observe(n); });
+    // Запасной обработчик на скролле — ловит элементы, которые IO мог пропустить при быстром скролле
+    function fallback() {
+      var vh = window.innerHeight;
+      nodes.forEach(function(el) {
+        if (el.classList.contains('is-visible')) return;
+        var r = el.getBoundingClientRect();
+        if (r.top < vh * 0.95 && r.bottom > 0) {
+          el.classList.add('is-visible');
+          io.unobserve(el);
+        }
+      });
+    }
+    window.addEventListener('scroll', fallback, { passive: true });
+    setTimeout(fallback, 100);
   })();
 </script>
 
