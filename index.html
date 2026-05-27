@@ -262,6 +262,28 @@
     }
 
     /* ==========================================================
+       HERO GENDER SYMBOL — деликатный значок в верхнем правом углу
+    ========================================================== */
+    .hero__gender {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 60px;
+      height: 60px;
+      z-index: 4;
+      opacity: 0.78;
+      pointer-events: none;
+      user-select: none;
+    }
+    .hero__gender svg { display: block; width: 100%; height: 100%; }
+    @media (max-width: 1024px) {
+      .hero__gender { width: 48px; height: 48px; top: 18px; right: 18px; }
+    }
+    @media (max-width: 640px) {
+      .hero__gender { width: 38px; height: 38px; top: 14px; right: 14px; opacity: 0.72; }
+    }
+
+    /* ==========================================================
        HERO CONTENT (959×807, x=124, y=64, AL ↓ gap 52)
     ========================================================== */
     .hero__content {
@@ -2102,6 +2124,24 @@
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+
+    /* ==========================================================
+       REVEAL — плавное появление блоков и карточек при скролле
+       (исключая блоки 2 и 3 со sticky-scroll анимацией)
+    ========================================================== */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
+      }
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
     .quiz__step-num {
       font-size: 12px;
       font-weight: 500;
@@ -3681,6 +3721,24 @@
     <!-- Hero image (woman + product) -->
     <img class="hero__woman" src="assets/hero-woman.webp" alt="Жінка з препаратом Biopatid">
 
+    <!-- Gender symbol — препарат для жінок і чоловіків -->
+    <span class="hero__gender" aria-hidden="true">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" focusable="false">
+        <g fill="none" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
+          <g stroke="#D584B0">
+            <circle cx="22" cy="28" r="10"/>
+            <line x1="22" y1="38" x2="22" y2="54"/>
+            <line x1="15" y1="48" x2="29" y2="48"/>
+          </g>
+          <g stroke="#6C95C2">
+            <circle cx="38" cy="36" r="10"/>
+            <line x1="45.07" y1="28.93" x2="53" y2="21"/>
+            <polyline points="47 21 53 21 53 27"/>
+          </g>
+        </g>
+      </svg>
+    </span>
+
     <!-- Hero content -->
     <div class="hero__content">
 
@@ -4869,6 +4927,7 @@
     if (!mechanics) return;
     const chartEl = mechanics.querySelector('.mechanics__chart');
     const pathEl = mechanics.querySelector('.mechanics__path');
+    const graphLine = mechanics.querySelector('.mechanics__graph-line');
     const steps = mechanics.querySelectorAll('.mechanics__step');
 
     function update() {
@@ -4881,6 +4940,8 @@
       const graphRange = Math.max(1, graphEnd - graphStart);
       const graphProgress = Math.max(0, Math.min(1, (window.scrollY - graphStart) / graphRange));
       mechanics.style.setProperty('--mechanics-progress', graphProgress.toFixed(3));
+      // Firefox fix: некоторые версии нестабильно считают calc() с unitless var() для stroke-dashoffset
+      if (graphLine) graphLine.style.strokeDashoffset = (760 * (1 - graphProgress)).toFixed(2);
 
       // --- Steps: animate only when path section is visible on screen ---
       const pathRect = (pathEl || mechanics).getBoundingClientRect();
@@ -5559,6 +5620,43 @@
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && modal.classList.contains('is-open')) window.closeOrderModal();
     });
+  })();
+</script>
+
+<script>
+  // ====== Reveal-on-scroll — блоки 4–8 (sticky-scroll блоки 2,3 не трогаем) ======
+  (function() {
+    if (!('IntersectionObserver' in window)) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var selectors = [
+      '.mechanics__panel',
+      '.proof__title',
+      '.proof__lead',
+      '.proof__card',
+      '.product__title',
+      '.product__copy',
+      '.product__slide-area',
+      '.faq__title',
+      '.faq__item',
+      '.quiz__title'
+    ];
+    var nodes = [];
+    selectors.forEach(function(sel) {
+      Array.prototype.forEach.call(document.querySelectorAll(sel), function(el) {
+        el.classList.add('reveal');
+        nodes.push(el);
+      });
+    });
+    if (nodes.length === 0) return;
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    nodes.forEach(function(n) { io.observe(n); });
   })();
 </script>
 
