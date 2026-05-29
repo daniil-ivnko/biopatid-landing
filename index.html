@@ -1873,6 +1873,13 @@
       color: var(--c-text-50);
       letter-spacing: 0.5px;
     }
+    .product__description {
+      margin-top: 12px;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--c-muted, #6b7280);
+      max-width: 460px;
+    }
     .product__name-row {
       margin: 36px 0 0;
       display: flex;
@@ -4355,6 +4362,8 @@
 
         <p class="product__includes">Препарат на 3 місяці · Підбір дози · Підтримка</p>
 
+        <p class="product__description" id="product-description">Інноваційний препарат для зниження ваги. Контроль апетиту, стабільне схуднення без дієт.</p>
+
         <div class="product__name-row">
           <span class="product__product-name" id="product-name">Biopatid</span>
           <span class="product__product-dose" id="product-dose-label">60 мг</span>
@@ -5267,6 +5276,9 @@
     var products = [
       {
         name: 'Biopatid',
+        tagline: '«Ми не продаємо дози. Ми продаємо результат під ключ.»',
+        includes: 'Препарат на 3 місяці · Підбір дози · Підтримка',
+        description: 'Інноваційний препарат для зниження ваги. Контроль апетиту, стабільне схуднення без дієт.',
         doses: [
           { label: '40 мг', price: '24 700 ₴', photo: 1 },
           { label: '60 мг', price: '31 200 ₴', photo: 0 }
@@ -5274,6 +5286,9 @@
       },
       {
         name: 'Biopatid Kit',
+        tagline: 'Повний курс за вигідною ціною',
+        includes: '6 упаковок · Підбір дози · Підтримка',
+        description: 'Комплексний набір Biopatid для повного курсу схуднення.',
         doses: [
           { label: '1 шт', price: '8 300 ₴', photo: 3 },
           { label: '6 шт', price: '49 800 ₴', photo: 2 }
@@ -5292,6 +5307,9 @@
     var doseLabel = document.getElementById('product-dose-label');
     var priceEl = document.getElementById('product-price');
     var titleNameEl = document.getElementById('product-title-name');
+    var subtitleEl  = document.querySelector('.product__subtitle');
+    var includesEl  = document.querySelector('.product__includes');
+    var descEl      = document.querySelector('.product__description');
 
     function render() {
       var p = products[currentProduct];
@@ -5321,6 +5339,13 @@
       titleNameEl.textContent = p.name;
       doseLabel.textContent = d.label;
       priceEl.textContent = d.price;
+      // Per-product texts (tagline / includes / description)
+      if (subtitleEl && p.tagline)  subtitleEl.textContent = p.tagline;
+      if (includesEl && p.includes) includesEl.textContent = p.includes;
+      if (descEl) {
+        descEl.textContent = p.description || '';
+        descEl.style.display = p.description ? '' : 'none';
+      }
     }
 
     window.renderProductSlider = render;
@@ -5479,18 +5504,15 @@
             if (attrs.dose_alt) doses[0].label = attrs.dose_alt;
           }
           slider[idx].name = attrs.name || slider[idx].name;
+          // Тексты — индивидуально для каждого продукта
+          if (attrs.tagline)  slider[idx].tagline  = attrs.tagline;
+          if (attrs.includes) slider[idx].includes = attrs.includes;
+          if (attrs.description != null) slider[idx].description = attrs.description;
         }
       });
 
-      // Перерисовываем слайдер с обновлёнными ценами
+      // Перерисовываем слайдер: цены + tagline/includes/description текущего продукта
       if (window.renderProductSlider) window.renderProductSlider();
-
-      // Обновляем tagline и includes (только для первого продукта)
-      var firstAttrs = (cmsProducts[0].attributes || cmsProducts[0]);
-      var subtitleEl = document.querySelector('.product__subtitle');
-      if (subtitleEl && firstAttrs.tagline) subtitleEl.textContent = firstAttrs.tagline;
-      var includesEl = document.querySelector('.product__includes');
-      if (includesEl && firstAttrs.includes) includesEl.textContent = firstAttrs.includes;
 
       console.log('[Strapi] Product data loaded successfully (' + cmsProducts.length + ' items)');
     }
