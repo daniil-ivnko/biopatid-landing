@@ -5517,18 +5517,31 @@
       console.log('[Strapi] Product data loaded successfully (' + cmsProducts.length + ' items)');
     }
 
-    // Загрузка данных
-    fetch(API_ENDPOINT)
-      .then(function(res) {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return res.json();
-      })
-      .then(function(json) {
-        applyProductData(json.data || []);
-      })
-      .catch(function(err) {
-        console.log('[Strapi] API unavailable, using fallback HTML content. (' + err.message + ')');
-      });
+    // Загрузка данных с повторными попытками.
+    // Render free-tier засыпает и на холодном старте отдаёт 503 до ~минуты,
+    // поэтому делаем несколько попыток с паузами, прежде чем откатиться на fallback.
+    function loadProducts(attempt) {
+      attempt = attempt || 1;
+      var MAX_ATTEMPTS = 8;
+      var delay = Math.min(2000 * attempt, 10000); // 2с,4с,6с,8с,10с,10с... (~50с суммарно)
+      fetch(API_ENDPOINT, { cache: 'no-store' })
+        .then(function(res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(function(json) {
+          applyProductData(json.data || []);
+        })
+        .catch(function(err) {
+          if (attempt < MAX_ATTEMPTS) {
+            console.log('[Strapi] спроба ' + attempt + ' не вдалася (' + err.message + '), повтор через ' + (delay / 1000) + 'с');
+            setTimeout(function() { loadProducts(attempt + 1); }, delay);
+          } else {
+            console.log('[Strapi] API unavailable after ' + MAX_ATTEMPTS + ' attempts, using fallback HTML content. (' + err.message + ')');
+          }
+        });
+    }
+    loadProducts();
   })();
 </script>
 
